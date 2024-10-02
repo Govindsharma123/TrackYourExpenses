@@ -22,5 +22,4 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 export const database = getDatabase(app);
 
-export { auth, provider, signInWithPopup}
-;
+export { auth, provider, signInWithPopup};
