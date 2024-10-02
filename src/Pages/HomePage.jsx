@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Home from "../components/Home";
 import { FaPlus } from "react-icons/fa";
+import ExpenseList from "../components/ExpenseList";
 
 const HomePage = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -15,8 +16,12 @@ const HomePage = () => {
 
   return (
     <div style={{display:'flex', justifyContent:'center', alignItems:'center', 
-    height:'100vh'}}>
-      <FaPlus onClick={handleForm} style={{backgroundColor:'blue', height:'50px', width:'50px', borderRadius:'10px', cursor:'pointer'}}/>
+    height:'100vh', }}>
+      
+
+      <ExpenseList />
+
+      <FaPlus onClick={handleForm} style={{backgroundColor:'blue', height:'50px', width:'50px', borderRadius:'10px', cursor:'pointer', position:'relative', marginTop:'500px'}}/>
 
       {isFormOpen &&
       <Home 
