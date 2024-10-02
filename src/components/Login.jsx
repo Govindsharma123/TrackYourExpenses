@@ -50,6 +50,10 @@ const Login = () => {
             alignItems: "center",
             gap: "10px",
             marginTop: "20px",
+            border:'2px solid #79d979',
+            padding:'5px',
+            borderRadius:'20px',
+            backgroundColor:'#79d9792e'
           }}
         >
           <FcGoogle size={"30px"} />
@@ -61,7 +65,9 @@ const Login = () => {
               cursor: "pointer",
               border: "none",
               borderRadius: "5px",
-              backgroundColor: "#79d979",
+              // backgroundColor: "#79d979",
+              backgroundColor: "transparent",
+
             }}
           >
             Login with Google
