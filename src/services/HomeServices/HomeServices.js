@@ -11,7 +11,7 @@ export const saveExpense = (newExpense) => {
     const month = dayjs(newExpense.date).format('MMM');
     const date = dayjs(newExpense.date).format('YYYY-MM-DD');
     const lastKey = await getLastKey(`Data/${uid}/Expense/${year}/${month}/${date}/lastKey`, "");
-    console.log('lastKey', lastKey);
+    // console.log('lastKey', lastKey);
     if (newExpense){
       const path = `Data/${uid}/Expense/${year}/${month}/${date}/${lastKey}`;
       saveData(path,newExpense);
