@@ -15,13 +15,15 @@ const HomePage = () => {
   };
 
   return (
-    <div style={{display:'flex', justifyContent:'center', alignItems:'center', 
-    height:'100vh', }}>
+    <div 
+    // style={{display:'flex', justifyContent:'center', alignItems:'center', 
+    // height:'100vh', }}
+    >
       
 
       <ExpenseList />
 
-      <FaPlus onClick={handleForm} style={{backgroundColor:'blue', height:'50px', width:'50px', borderRadius:'10px', cursor:'pointer', position:'relative', marginTop:'500px'}}/>
+      <button onClick={handleForm} style={{backgroundColor:'#79d9792e',height:'20px', borderRadius:'10px', cursor:'pointer', position:'relative',  marginTop:'300px', marginLeft:'1400px',}} >Add Expense</button>
 
       {isFormOpen &&
       <Home 
