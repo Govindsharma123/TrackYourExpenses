@@ -8,7 +8,8 @@ const Home = (props) => {
     const newExpense = {
       date : props.date,
       detail : props.detail,
-      amount : props.amount
+      amount : props.amount,
+      category : props.category
     }
     console.log('newExpense', newExpense);
     saveExpense(newExpense);
@@ -19,6 +20,7 @@ const Home = (props) => {
     props.setDate('');
     props.setDetail('');
     props.setAmount('');
+    props.setCategory('');
   }
 
   return (
@@ -52,6 +54,13 @@ const Home = (props) => {
           style={{ marginBottom: "10px" }}
           value={props.amount}
           onChange={(e)=>props.setAmount(e.target.value)}
+        />
+        <input
+        type="text"
+          placeholder="Enter Category"
+          style={{ marginBottom: "10px" }}
+          value={props.category}
+          onChange={(e)=>props.setCategory(e.target.value)}
         />
 
         <button type='button' onClick={handleSave}>Add Expense</button>
