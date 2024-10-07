@@ -34,6 +34,7 @@ const ExpenseList = ({expenses, setExpenses}) => {
         setExpenses(expenseList);
       } catch (error) {
         console.log("error in fetching expense list", error);
+        setExpenses([]); // Ensure empty array in case of error
       }
       setLoading(false);
     };
@@ -68,7 +69,7 @@ const ExpenseList = ({expenses, setExpenses}) => {
 
   // Calculate total expenses
   // console.log(expenses)
-  let totalExpenses = expenses.reduce((acc, expense) => acc + parseFloat(expense.amount) || 0, 0); 
+  let totalExpenses = expenses?.reduce((acc, expense) => acc + parseFloat(expense.amount) || 0, 0); 
   totalExpenses = typeof totalExpenses === 'number' ? totalExpenses : parseFloat(totalExpenses) || 0;
 
   const getTotalAmountColor = () => {
@@ -88,28 +89,32 @@ const ExpenseList = ({expenses, setExpenses}) => {
       </header>
 
       {/* Expense List Section */}
-       <section className="expense-list">
+      <section className="expense-list">
         <h3>Recent Expenses</h3>
         <div className="expense-items">
-          {/* {console.log('expenses', expenses)} */}
-          {expenses.map((expense) => (
-            <div className="expense-card" key={expense.id}>
-              <div className="expense-icon">
-                 <FontAwesomeIcon icon={getIconForType(expense.detail)} /> 
+          {loading ? (
+            <p>Loading...</p>
+          ) : expenses.length === 0 ? (
+            <p>No expenses available</p>
+          ) : (
+            expenses.map((expense) => (
+              <div className="expense-card" key={expense.id}>
+                <div className="expense-icon">
+                  <FontAwesomeIcon icon={getIconForType(expense.detail)} />
+                </div>
+                <div className="expense-info">
+                  <div className="expense-date">{dayjs(expense.date).format('DD MMM YYYY')}</div>
+                  <div className="expense-type">{expense.detail}</div>
+                  <div className="expense-amount">₹ {expense.amount}</div>
+                </div>
               </div>
-                  <div className="expense-info">
-                 <div className="expense-date">{dayjs(expense.date).format('DD MMM YYYY')}</div>
-                 <div className="expense-type">{expense.detail}</div>
-                 <div className="expense-amount">₹ {expense.amount}</div> 
-              </div> 
-            </div> 
-           ))}
+            ))
+          )}
         </div>
-      </section> 
-
-     
+      </section>
     </div>
   );
 };
+
 
 export default ExpenseList;

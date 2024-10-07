@@ -53,11 +53,13 @@ export const getExpenseList = async(uid) => {
         resolve(expenseArray);
       }
       else{
-        resolve(console.log('No expense data found'));
+        console.log('No expense data found');
+        resolve([]);
       }
     }
     catch(error){
-      reject(console.log(error));
+      console.error('Error in fetching expense data:', error);
+      reject(error);
     }
   })
 }
