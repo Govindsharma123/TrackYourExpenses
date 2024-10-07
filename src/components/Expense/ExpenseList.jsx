@@ -42,18 +42,11 @@ const ExpenseList = () => {
 
  
 
-  // const handleAddExpense = (expenseData) => {
-  //   const newExpense = {
-  //     ...expenseData,
-  //     id: expenses.length + 1,
-  //     icon: getIconForType(expenseData.type),
-  //   };
-  //   setExpenses([...expenses, newExpense]);
-  // };
+
 
   // Function to assign icons based on expense type
-  const getIconForType = (type) => {
-    switch (type.toLowerCase()) {
+  const getIconForType = (detail) => {
+    switch (detail.toLowerCase()) {
       case 'groceries':
         return faShoppingCart;
       case 'utilities':
@@ -73,22 +66,23 @@ const ExpenseList = () => {
     }
   };
 
-  // // Calculate total expenses
-  // let totalExpenses = expenses.reduce((acc, expense) => acc + parseFloat(expense.amount) || 0, 0);
-  // totalExpenses = typeof totalExpenses === 'number' ? totalExpenses : parseFloat(totalExpenses) || 0;
+  // Calculate total expenses
+  let totalExpenses = expenses.reduce((acc, expense) => acc + parseFloat(expense.amount) || 0, 0); 
+  totalExpenses = typeof totalExpenses === 'number' ? totalExpenses : parseFloat(totalExpenses) || 0;
 
-  // const getTotalAmountColor = () => {
-  //   if (totalExpenses < 500) return '#81ecec'; // Pastel teal
-  //   if (totalExpenses < 1000) return '#ffeaa7'; // Pastel yellow
-  //   return '#fab1a0'; // Pastel peach
-  // };
+  const getTotalAmountColor = () => {
+    if (totalExpenses < 500) return '#81ecec'; // Pastel teal
+    if (totalExpenses < 1000) return '#ffeaa7'; // Pastel yellow
+    return '#fab1a0'; // Pastel peach
+  };
+
   return (
     <div className="expense-page">
       {/* Total Expense Section */}
       <header className="total-expense">
         <div className="total-expense-card">
           <h2>Total Expenses</h2>
-          {/* <p className="total-amount" style={{ color: getTotalAmountColor() }}> ₹ {Number(totalExpenses).toFixed(2)}</p>  */}
+          <p className="total-amount" style={{ color: getTotalAmountColor() }}> ₹ {Number(totalExpenses).toFixed(2)}</p> 
         </div> 
       </header>
 
@@ -100,7 +94,7 @@ const ExpenseList = () => {
           {expenses.map((expense) => (
             <div className="expense-card" key={expense.id}>
               <div className="expense-icon">
-                 <FontAwesomeIcon icon={expense.icon} /> 
+                 <FontAwesomeIcon icon={getIconForType(expense.detail)} /> 
               </div>
                   <div className="expense-info">
                  <div className="expense-date">{dayjs(expense.date).format('DD MMM YYYY')}</div>
@@ -112,9 +106,6 @@ const ExpenseList = () => {
         </div>
       </section> 
 
-      {/* Add Expense Button */}
-      
-      {/* Add Expense Modal */}
      
     </div>
   );
