@@ -14,6 +14,7 @@ import {
   ref as ref_storage,
   uploadBytes,
 } from "firebase/storage";
+import { toast } from "react-toastify";
 
 
 export const getData = (path) => {
@@ -158,28 +159,28 @@ export const getLastKey = (path, val) => {
 //       });
 //   });
 // };
-// export const fetchRealTimeData = (path, setState, userStatus) => {
-//   if (path) {
-//     const unsubscribe = onValue(
-//       ref(database, path),
-//       (snapshot) => {
-//         if (snapshot.exists()) {
-//           const data = snapshot.val();
-//           // userStatus && console.log("data:", data);
-//           setState(data);
-//         } else {
-//           setState(null);
-//         }
-//       },
-//       (error) => {
-//         console.error("Error fetching data:", error);
-//       }
-//     );
-//     return unsubscribe;
-//   } else {
-//     return "fail";
-//   }
-// };
+export const fetchRealTimeData = (path, setState, userStatus) => {
+  if (path) {
+    const unsubscribe = onValue(
+      ref(database, path),
+      (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          // userStatus && console.log("data:", data);
+          setState(data);
+        } else {
+          setState(null);
+        }
+      },
+      (error) => {
+        console.error("Error fetching data:", error);
+      }
+    );
+    return unsubscribe;
+  } else {
+    return "fail";
+  }
+};
 
 // export const updateComparebleData=(path,newData,compareKey,condition)=> {
 //   return new Promise((resolve, reject) => {
@@ -206,3 +207,4 @@ export const getLastKey = (path, val) => {
 //     });
 //   });
 // }
+

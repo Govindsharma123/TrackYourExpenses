@@ -14,8 +14,8 @@ import {
 import AddExpenseModal from './AddExpense';
 import { getExpenseList } from '../../services/HomeServices/HomeServices';
 
-const ExpenseList = () => {
-  const [expenses, setExpenses] = useState([]);
+const ExpenseList = ({expenses, setExpenses}) => {
+  
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -30,7 +30,7 @@ const ExpenseList = () => {
 
       try {
         const expenseList = await getExpenseList(uid);
-        console.log('expense List: ', expenseList)
+        // console.log('expense List: ', expenseList)
         setExpenses(expenseList);
       } catch (error) {
         console.log("error in fetching expense list", error);
@@ -67,6 +67,7 @@ const ExpenseList = () => {
   };
 
   // Calculate total expenses
+  // console.log(expenses)
   let totalExpenses = expenses.reduce((acc, expense) => acc + parseFloat(expense.amount) || 0, 0); 
   totalExpenses = typeof totalExpenses === 'number' ? totalExpenses : parseFloat(totalExpenses) || 0;
 
@@ -90,7 +91,7 @@ const ExpenseList = () => {
        <section className="expense-list">
         <h3>Recent Expenses</h3>
         <div className="expense-items">
-          {console.log('expenses', expenses)}
+          {/* {console.log('expenses', expenses)} */}
           {expenses.map((expense) => (
             <div className="expense-card" key={expense.id}>
               <div className="expense-icon">

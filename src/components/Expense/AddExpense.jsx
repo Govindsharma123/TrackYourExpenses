@@ -1,55 +1,36 @@
 import React, { useState } from 'react';
 import './expenseList.css'; // Assuming AddExpenseModal styles are in the same CSS file
 import { saveExpense } from '../../services/HomeServices/HomeServices';
+import { toast , ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const AddExpenseModal = ({ showModal, setShowModal, addExpense, date, setDate, detail, setDetail, amount, setAmount }) => {
-  // const [expenseData, setExpenseData] = useState({
-  //   date: '',
-  //   type: '',
-  //   amount: '',
-  // });
-
-  // const handleChange = (e) => {
-  //   setExpenseData({
-  //     ...expenseData,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (expenseData.type.trim() === '' || expenseData.amount <= 0) {
-  //     alert('Please enter valid expense details.');
-  //     return;
-  //   }
-  //   addExpense(expenseData);
-  //   setShowModal(false);
-  //   setExpenseData({ date: '', type: '', amount: '' });
-  // };
-  // console.log(date, detail, amount)
-
-
+const AddExpenseModal = ({ showModal, setShowModal, addExpense, date, setDate, detail, setDetail, amount, setAmount, category, setCategory, expenses, setExpenses}) => {
+  
     const handleSave=()=>{
           const newExpense = {
             date : date,
             detail : detail,
             amount : amount,
-            // category : category
+            category : category
           }
-              if (detail.trim() === '' || amount <= 0) {
-                alert('Please enter valid expense details.');
+              if (detail.trim() === '' || amount <= 0 || category.trim() === '' || date.trim() === '' ) {
+                toast.error('Please enter valid expense details.');
                 return;
               }
           console.log('newExpense', newExpense);
-          saveExpense(newExpense);
+          saveExpense(newExpense).then(()=>{
+            setExpenses(prevExpenses => [...prevExpenses, newExpense]);
+          });
+          toast.success('Expense added successfully')
           clearForm();
+          setShowModal(false);
         }
       
         const clearForm = ()=>{
           setDate('');
           setDetail('');
           setAmount('');
-          // setCategory('');
+          setCategory('');
         }
       
   
@@ -81,13 +62,24 @@ const AddExpenseModal = ({ showModal, setShowModal, addExpense, date, setDate, d
             />
           </div>
           <div className="form-group">
-            <label htmlFor="type">Type of Expense</label>
+            <label htmlFor="amount">Category of Expense </label>
+            <input
+              type="text"
+              name="category"
+              value={category}
+              onChange={(e)=>setCategory(e.target.value)}
+              placeholder="e.g., Groceries"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="type">Details</label>
             <input
               type="text"
               name="type"
               value={detail}
               onChange={(e) => setDetail(e.target.value)}
-              placeholder="e.g., Groceries"
+              placeholder="e.g., 2 samose"
               required
             />
           </div>

@@ -16,7 +16,10 @@ export const saveExpense = (newExpense) => {
       const path = `Data/${uid}/Expense/${year}/${month}/${date}/${lastKey}`;
       saveData(path,newExpense);
       saveData(`Data/${uid}/Expense/${year}/${month}/${date}`, {lastKey});
+
+
       console.log('data saved successfully')
+      resolve(newExpense);
     } 
     else{
       resolve(console.log('error in saving expense'));
@@ -46,7 +49,7 @@ export const getExpenseList = async(uid) => {
             })
           }
       })
-      console.log('hlo')
+      // console.log('hlo')
         resolve(expenseArray);
       }
       else{
