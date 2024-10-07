@@ -1,34 +1,62 @@
 import React, { useState } from 'react';
 import './expenseList.css'; // Assuming AddExpenseModal styles are in the same CSS file
+import { saveExpense } from '../../services/HomeServices/HomeServices';
 
-const AddExpenseModal = ({ showModal, setShowModal, addExpense }) => {
-  const [expenseData, setExpenseData] = useState({
-    date: '',
-    type: '',
-    amount: '',
-  });
+const AddExpenseModal = ({ showModal, setShowModal, addExpense, date, setDate, detail, setDetail, amount, setAmount }) => {
+  // const [expenseData, setExpenseData] = useState({
+  //   date: '',
+  //   type: '',
+  //   amount: '',
+  // });
 
-  const handleChange = (e) => {
-    setExpenseData({
-      ...expenseData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // const handleChange = (e) => {
+  //   setExpenseData({
+  //     ...expenseData,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (expenseData.type.trim() === '' || expenseData.amount <= 0) {
-      alert('Please enter valid expense details.');
-      return;
-    }
-    addExpense(expenseData);
-    setShowModal(false);
-    setExpenseData({ date: '', type: '', amount: '' });
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (expenseData.type.trim() === '' || expenseData.amount <= 0) {
+  //     alert('Please enter valid expense details.');
+  //     return;
+  //   }
+  //   addExpense(expenseData);
+  //   setShowModal(false);
+  //   setExpenseData({ date: '', type: '', amount: '' });
+  // };
+  // console.log(date, detail, amount)
+
+
+    const handleSave=()=>{
+          const newExpense = {
+            date : date,
+            detail : detail,
+            amount : amount,
+            // category : category
+          }
+              if (detail.trim() === '' || amount <= 0) {
+                alert('Please enter valid expense details.');
+                return;
+              }
+          console.log('newExpense', newExpense);
+          saveExpense(newExpense);
+          clearForm();
+        }
+      
+        const clearForm = ()=>{
+          setDate('');
+          setDetail('');
+          setAmount('');
+          // setCategory('');
+        }
+      
+  
 
   const handleClose = () => {
     setShowModal(false);
-    setExpenseData({ date: '', type: '', amount: '' });
+    // setExpenseData({ date: '', type: '', amount: '' });
   };
 
   return (
@@ -41,14 +69,14 @@ const AddExpenseModal = ({ showModal, setShowModal, addExpense }) => {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form >
           <div className="form-group">
             <label htmlFor="date">Date</label>
             <input
               type="date"
               name="date"
-              value={expenseData.date}
-              onChange={handleChange}
+              value={date}
+              onChange={(e) =>setDate(e.target.value)}
               required
             />
           </div>
@@ -57,8 +85,8 @@ const AddExpenseModal = ({ showModal, setShowModal, addExpense }) => {
             <input
               type="text"
               name="type"
-              value={expenseData.type}
-              onChange={handleChange}
+              value={detail}
+              onChange={(e) => setDetail(e.target.value)}
               placeholder="e.g., Groceries"
               required
             />
@@ -68,8 +96,8 @@ const AddExpenseModal = ({ showModal, setShowModal, addExpense }) => {
             <input
               type="number"
               name="amount"
-              value={expenseData.amount}
-              onChange={handleChange}
+              value={amount}
+              onChange={(e)=>setAmount(e.target.value)}
               placeholder="e.g., 50.00"
               step="0.01"
               min="0"
@@ -78,7 +106,7 @@ const AddExpenseModal = ({ showModal, setShowModal, addExpense }) => {
           </div>
 
           <div className="form-actions">
-            <button type="submit" className="save-btn">
+            <button type="submit" className="save-btn" onClick= {handleSave}>
               Save Expense
             </button>
             <button type="button" className="cancel-btn" onClick={handleClose}>
