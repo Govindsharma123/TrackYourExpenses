@@ -46,8 +46,8 @@ const ExpenseList = ({expenses, setExpenses}) => {
 
 
   // Function to assign icons based on expense type
-  const getIconForType = (detail) => {
-    switch (detail.toLowerCase()) {
+  const getIconForType = (category) => {
+    switch (category.toLowerCase()) {
       case 'groceries':
         return faShoppingCart;
       case 'utilities':
@@ -106,6 +106,8 @@ const ExpenseList = ({expenses, setExpenses}) => {
                   <div className="expense-date">{dayjs(expense.date).format('DD MMM YYYY')}</div>
                   <div className="expense-type">{expense.detail}</div>
                   <div className="expense-amount">₹ {expense.amount}</div>
+                  <div className='expense-category'> {expense.category}</div>
+                  <div className='expense-mode'>{expense.modeOfExpense}</div>
                 </div>
               </div>
             ))

@@ -10,6 +10,7 @@ const HomePage = () => {
   const [category, setCategory ] = useState('');
   const [showModal,   setShowModal] = useState(false);
   const [expenses, setExpenses] = useState([]);
+  const [modeOfExpense, setModeOfExpense] = useState('');
 
   return (
 
@@ -23,6 +24,7 @@ const HomePage = () => {
         detail={detail} setDetail={setDetail} 
         amount= {amount} setAmount={setAmount}
         category={category} setCategory={setCategory}
+        modeOfExpense={modeOfExpense} setModeOfExpense={setModeOfExpense}
         expenses={expenses} setExpenses={setExpenses}
         showModal={showModal}
         setShowModal={setShowModal}

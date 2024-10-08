@@ -4,40 +4,69 @@ import { saveExpense } from '../../services/HomeServices/HomeServices';
 import { toast , ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const AddExpenseModal = ({ showModal, setShowModal, addExpense, date, setDate, detail, setDetail, amount, setAmount, category, setCategory, expenses, setExpenses}) => {
+const AddExpenseModal = ({ showModal, setShowModal, addExpense, date, setDate, detail, setDetail, amount, setAmount, category, setCategory, expenses, setExpenses, modeOfExpense, setModeOfExpense}) => {
   
-    const handleSave=()=>{
-          const newExpense = {
-            date : date,
-            detail : detail,
-            amount : amount,
-            category : category
-          }
-              if (detail.trim() === '' || amount <= 0 || category.trim() === '' || date.trim() === '' ) {
-                toast.error('Please enter valid expense details.');
-                return;
-              }
+    const handleSave=(e)=>{
+      e.preventDefault();
+
+    if (detail.trim() === '') {
+      toast.error('Expense detail cannot be empty.');
+      return;
+    }
+
+    if (amount <= 0) {
+      toast.error('Amount must be greater than 0.');
+      return;
+    }
+
+if (category.trim() === '') {
+  toast.error('Category cannot be empty.');
+  return;
+}
+
+if (date.trim() === '') {
+  toast.error('Date cannot be empty.');
+  return;
+}
+
+if (modeOfExpense.trim() === ''){
+  toast.error('Please select a mode of expense.');
+  return;
+}
+
+        const newExpense = {
+          date : date,
+          detail : detail,
+          amount : amount,
+          category : category,
+          modeOfExpense : modeOfExpense,
+        }
+             
           console.log('newExpense', newExpense);
           saveExpense(newExpense).then(()=>{
             setExpenses(prevExpenses => [...prevExpenses, newExpense]);
-          });
+         
           toast.success('Expense added successfully')
           clearForm();
           setShowModal(false);
-        }
+        }).catch((error) => {
+          toast.error('Error in saving expense. Please try again later.');
+        });
+    }
       
         const clearForm = ()=>{
           setDate('');
           setDetail('');
           setAmount('');
           setCategory('');
+          setModeOfExpense('');
         }
       
   
 
   const handleClose = () => {
     setShowModal(false);
-    // setExpenseData({ date: '', type: '', amount: '' });
+    clearForm();
   };
 
   return (
@@ -96,9 +125,20 @@ const AddExpenseModal = ({ showModal, setShowModal, addExpense, date, setDate, d
               required
             />
           </div>
+          <div className="form-group">
+            <label htmlFor="type">Mode of Transaction</label>
+            <input
+              type="text"
+              name="mode"
+              value={modeOfExpense}
+              onChange={(e) => setModeOfExpense(e.target.value)}
+              placeholder="e.g., paytm"
+              required
+            />
+          </div>
 
           <div className="form-actions">
-            <button type="submit" className="save-btn" onClick= {handleSave}>
+            <button type="button" className="save-btn" onClick= {handleSave}>
               Save Expense
             </button>
             <button type="button" className="cancel-btn" onClick={handleClose}>
