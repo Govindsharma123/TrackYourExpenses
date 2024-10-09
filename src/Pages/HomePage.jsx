@@ -7,7 +7,6 @@ const HomePage = () => {
   const [date, setDate ] = useState('');
   const [detail, setDetail ] = useState('');
   const [amount, setAmount ] = useState('');
-  const [category, setCategory ] = useState('');
   const [showModal,   setShowModal] = useState(false);
   const [expenses, setExpenses] = useState([]);
   const [modeOfExpense, setModeOfExpense] = useState('');
@@ -23,7 +22,6 @@ const HomePage = () => {
         setDate={setDate} 
         detail={detail} setDetail={setDetail} 
         amount= {amount} setAmount={setAmount}
-        category={category} setCategory={setCategory}
         modeOfExpense={modeOfExpense} setModeOfExpense={setModeOfExpense}
         expenses={expenses} setExpenses={setExpenses}
         showModal={showModal}

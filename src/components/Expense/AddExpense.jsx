@@ -1,14 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './expenseList.css'; // Assuming AddExpenseModal styles are in the same CSS file
-import { saveExpense } from '../../services/HomeServices/HomeServices';
+import { getAllCategories, saveExpense, saveNewCategory } from '../../services/HomeServices/HomeServices';
 import { toast , ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const AddExpenseModal = ({ showModal, setShowModal, addExpense, date, setDate, detail, setDetail, amount, setAmount, category, setCategory, expenses, setExpenses, modeOfExpense, setModeOfExpense}) => {
-  
-    const handleSave=(e)=>{
-      e.preventDefault();
+const AddExpenseModal = ({ showModal, setShowModal, addExpense, date, setDate, detail, setDetail, amount, setAmount, expenses, setExpenses, modeOfExpense, setModeOfExpense}) => {
+  const [category, setCategory] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [filteredCategories, setFilteredCategories] = useState([]);
+  const [isCategoryUnique, setIsCategoryUnique] = useState(true);
+  const [showAddButton, setShowAddButton] = useState(false);
 
+  
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoriesList = await getAllCategories();
+        setCategories(categoriesList);
+        console.log(categoriesList);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    if (showModal) fetchCategories();
+  }, [showModal]);
+
+    const handleSave=(e)=>{
+      e.preventDefault();     
+      //error toasts
     if (detail.trim() === '') {
       toast.error('Expense detail cannot be empty.');
       return;
@@ -19,21 +39,23 @@ const AddExpenseModal = ({ showModal, setShowModal, addExpense, date, setDate, d
       return;
     }
 
-if (category.trim() === '') {
-  toast.error('Category cannot be empty.');
-  return;
-}
+    if (category.trim() === '') {
+      toast.error('Category cannot be empty.');
+      return;
+    }
 
-if (date.trim() === '') {
-  toast.error('Date cannot be empty.');
-  return;
-}
+    if (date.trim() === '') {
+      toast.error('Date cannot be empty.');
+      return;
+    }
 
-if (modeOfExpense.trim() === ''){
-  toast.error('Please select a mode of expense.');
-  return;
-}
+    if (modeOfExpense.trim() === ''){
+      toast.error('Please select a mode of expense.');
+      return;
+    }
 
+  
+    //saving the expense details in db
         const newExpense = {
           date : date,
           detail : detail,
@@ -49,7 +71,7 @@ if (modeOfExpense.trim() === ''){
           toast.success('Expense added successfully')
           clearForm();
           setShowModal(false);
-        }).catch((error) => {
+        }).catch(() => {
           toast.error('Error in saving expense. Please try again later.');
         });
     }
@@ -61,8 +83,58 @@ if (modeOfExpense.trim() === ''){
           setCategory('');
           setModeOfExpense('');
         }
-      
+
+
+
+        //handling category change
+  const handleCategoryChange = (e) => {
+    const input = e.target.value;
+    setCategory(input);
   
+
+
+  const filtered = categories.filter((cat) => 
+      cat.name  && cat.name.toLowerCase().includes(input.toLowerCase())
+  )
+  setFilteredCategories(filtered)
+      
+ // Check if the entered category is unique
+ const isUnique = !categories.some((cat) => cat.name.toLowerCase() === input.toLowerCase());
+ setIsCategoryUnique(isUnique);
+};
+
+  const handleAddCategory = async()=>{
+
+    if (category.trim() === '') {
+      toast.error('Please enter a valid category.');
+      return;
+    } 
+
+    try{
+      const newCategory = {
+        name : category,
+      }
+      await saveNewCategory(newCategory);
+      if (newCategory) {
+        // Add new category to the list and clear the input
+        setCategories((prevCategories) => [...prevCategories, newCategory]);
+        setFilteredCategories([]);
+        setIsCategoryUnique(true);
+        setShowAddButton(false);
+      }
+    }
+    catch (error) {
+      console.error('Error adding category:', error);
+      toast.error('Failed to add new category.');
+    }
+  }
+
+
+  const handleCategorySelect = (selectedCategory) => {
+    setCategory(selectedCategory.name);  // Set selected category from suggestions
+    setFilteredCategories([]);  // Clear suggestions
+    setShowAddButton(false);     // Hide add button since category already exists
+  };
 
   const handleClose = () => {
     setShowModal(false);
@@ -90,16 +162,37 @@ if (modeOfExpense.trim() === ''){
               required
             />
           </div>
-          <div className="form-group">
+          <div className="form-group" >
             <label htmlFor="amount">Category of Expense </label>
+            <div style={{ display: 'flex', position: 'relative' }}>
             <input
               type="text"
               name="category"
               value={category}
-              onChange={(e)=>setCategory(e.target.value)}
+              onChange={handleCategoryChange}
               placeholder="e.g., Groceries"
               required
+              autoComplete="off"
             />
+
+            {filteredCategories.length > 0 && (
+               <ul className="category-suggestions">
+                {filteredCategories.map((category, i) =>{
+                  <li key={i} onClick={handleCategorySelect(category)}>{category}</li>
+                })}
+              </ul>
+            )}
+            {isCategoryUnique && category.trim() && (
+                <button
+                  style={{ height: '40px' }}
+                  onClick={handleAddCategory}
+                  type="button"
+                >
+                  +
+                </button>
+            )}
+            </div>
+            
           </div>
           <div className="form-group">
             <label htmlFor="type">Details</label>
