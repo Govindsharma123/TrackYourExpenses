@@ -282,3 +282,34 @@
   }
 }
 
+.category-suggestions {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  position: absolute; /* Ensures the dropdown aligns with the input field */
+  top: 40px; /* Adjusts to appear just below the input */
+  left: 0;
+  width: 100%; /* Makes sure the suggestions dropdown is the same width as the input field */
+  max-height: 200px; /* Restricts the height of the dropdown and allows for scrolling if too many suggestions */
+  overflow-y: auto; /* Adds vertical scrollbar when suggestions exceed the height */
+  background-color: #fff;
+  border: 1px solid #ccc; /* Adds a border to the dropdown */
+  z-index: 1000; /* Makes sure it stays on top of other content */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds subtle shadow for depth */
+}
+
+.category-suggestions li {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #eee; /* Adds a subtle divider between list items */
+  transition: background-color 0.2s ease;
+}
+
+.category-suggestions li:hover {
+  background-color: #f0f0f0; /* Changes the background color on hover for better visibility */
+}
+
+.category-suggestions li:last-child {
+  border-bottom: none; /* Removes border on the last item */
+}

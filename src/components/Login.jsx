@@ -12,7 +12,9 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const uid = result.user.uid;
       console.log('uid', uid);
-      localStorage.setItem("uid", uid);
+      if(uid !== null){
+        localStorage.setItem("uid", uid);
+      }
       Navigate("/home");
     } catch (error) {
       console.error("Error during login", error);
