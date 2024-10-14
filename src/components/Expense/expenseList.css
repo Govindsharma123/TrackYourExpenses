@@ -98,6 +98,17 @@
   font-weight: bold;
 }
 
+.expense-category{
+  font-size: 1.4 rem;
+  color:#6c5ce7;
+  font-weight: bold;
+}
+
+.expense-mode{
+  font-weight: 500;
+  
+}
+
 /* Add Expense Button */
 .add-expense-btn {
   background-color: #a29bfe; /* Pastel purple */

@@ -10,6 +10,10 @@ import {
   faUtensils,
   faTv,
   faHome,
+  faMoneyBillWave,
+  faCreditCard,
+  faWallet,
+  faMobileAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import AddExpenseModal from "./AddExpense";
 import { getExpenseList } from "../../services/HomeServices/HomeServices";
@@ -62,6 +66,22 @@ const ExpenseList = (props) => {
         return faHome;
       default:
         return faShoppingCart; // Default icon
+    }
+  };
+
+  // Function to assign icons based on mode of expense
+  const getIconForMode = (mode) => {
+    switch (mode.toLowerCase()) {
+      case "cash":
+        return faMoneyBillWave;
+      case "credit card":
+        return faCreditCard;
+      case "debit card":
+        return faWallet;
+      case "upi":
+        return faMobileAlt;
+      default:
+        return faWallet; // Default icon for other payment modes
     }
   };
 
@@ -126,7 +146,10 @@ const ExpenseList = (props) => {
                   <div className="expense-type">{expense.detail}</div>
                   <div className="expense-amount">₹ {expense.amount}</div>
                   <div className="expense-category"> {expense.category}</div>
-                  <div className="expense-mode">{expense.modeOfExpense}</div>
+                  <div className="expense-mode">
+                    <FontAwesomeIcon icon={getIconForMode(expense.modeOfExpense)} />{" "}
+                    {expense.modeOfExpense}
+                  </div>
                 </div>
               </div>
             ))
