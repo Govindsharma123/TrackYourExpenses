@@ -202,11 +202,14 @@ const AddExpenseModal = (
         name: category,
       };
       await saveNewCategory(newCategory);
-      setCategories((prevCategories) => [...prevCategories, newCategory]);
-      // setCategory('');
+      // Add the new category to the list and select it
+    setCategories((prevCategories) => [...prevCategories, newCategory]);
 
-      // toast.success('New category added successfully!');
-      // isCategoryUnique(false);
+    // Set the new category as selected
+    setCategory(newCategory.name);
+
+      toast.success('New category added successfully!');
+      setIsCategoryUnique(false);
     } catch (error) {
       console.error("Error adding category:", error);
       toast.error("Failed to add new category.");

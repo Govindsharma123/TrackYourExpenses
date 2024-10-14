@@ -116,7 +116,7 @@ export const saveNewCategory = (newCategory) => {
     saveData(path, newCategory);
     saveData(`Data/${uid}/Category`, {lastKey});
 
-    toast.success('category added successfully')
+    // toast.success('category added successfully')
     resolve(newCategory);
    }
    else{
