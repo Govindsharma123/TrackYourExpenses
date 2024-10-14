@@ -33,18 +33,18 @@ export const saveData = (path, data) => {
   });
 };
 
-// export const setData = (path, value) => {
-//   return new Promise((resolve) => {
-//     set(ref(database, path), value);
-//     resolve("success");
-//   });
-// };
-// export const RemoveData = (path) => {
-//   return new Promise((resolve) => {
-//     remove(ref(database, path));
-//     resolve("success");
-//   });
-// };
+export const setData = (path, value) => {
+  return new Promise((resolve) => {
+    set(ref(database, path), value);
+    resolve("success");
+  });
+};
+export const RemoveData = (path) => {
+  return new Promise((resolve) => {
+    remove(ref(database, path));
+    resolve("success");
+  });
+};
 
 export const getLastKey = (path, val) => {
   return new Promise((resolve) => {
@@ -62,27 +62,27 @@ export const getLastKey = (path, val) => {
   });
 };
 
-// export const setLastKey = (path, value) => {
-//   set(ref(database, path), value);
-// };
+export const setLastKey = (path, value) => {
+  set(ref(database, path), value);
+};
 
-// // export function uploadFileToStorage(imageUri, filePath) {
-// //   return new Promise((resolve, reject) => {
-// //     fetch(imageUri).then((res) => {
-// //       return res.blob();
-// //     }).catch((error) => {
-// //       reject(error.message)
-// //     }).then((blob) => {
-// //       uploadBytes(ref_storage(storage, filePath), blob).then((uploadTask) => {
-// //         resolve(uploadTask.metadata.fullPath);
-// //       }).catch((error) => {
-// //         reject(error.message)
-// //       })
-// //     }).catch((error) => {
-// //       reject(error.message)
-// //     })
-// //   })
-// // }
+// export function uploadFileToStorage(imageUri, filePath) {
+//   return new Promise((resolve, reject) => {
+//     fetch(imageUri).then((res) => {
+//       return res.blob();
+//     }).catch((error) => {
+//       reject(error.message)
+//     }).then((blob) => {
+//       uploadBytes(ref_storage(storage, filePath), blob).then((uploadTask) => {
+//         resolve(uploadTask.metadata.fullPath);
+//       }).catch((error) => {
+//         reject(error.message)
+//       })
+//     }).catch((error) => {
+//       reject(error.message)
+//     })
+//   })
+// }
 // export const uploadFileToStorage = async (imageUri, filepath) => {
 //   return new Promise(async (resolve) => {
 //     try {
@@ -102,7 +102,7 @@ export const getLastKey = (path, val) => {
 //   });
 // };
 
-// // created by - kunal
+// created by - kunal
 // export const deleteFileFromStorage = (filepath) => {
 //   return new Promise(async (resolve) => {
 //     try {
@@ -120,13 +120,13 @@ export const getLastKey = (path, val) => {
 //   })
 // }
 
-// export const getImageStoragePath = () => {
-//   let path = `https://firebasestorage.googleapis.com/v0/b/wevois-dev.appspot.com/o/VM%2F`;
-//   return path;
-// };
-// export const getCityImage = (value) => {
-//   https: return `https://firebasestorage.googleapis.com/v0/b/wevois-dev.appspot.com/o/VM%2Fwevoislabs%2FDefaultCityLogo%2F${value}?alt=media&token=bb50511c-9cab-4bb4-9690-ede56fc724df`;
-// };
+export const getImageStoragePath = () => {
+  let path = `https://firebasestorage.googleapis.com/v0/b/wevois-dev.appspot.com/o/VM%2F`;
+  return path;
+};
+export const getCityImage = (value) => {
+  https: return `https://firebasestorage.googleapis.com/v0/b/wevois-dev.appspot.com/o/VM%2Fwevoislabs%2FDefaultCityLogo%2F${value}?alt=media&token=bb50511c-9cab-4bb4-9690-ede56fc724df`;
+};
 // export const updateCounts = (path, increment) => {
 //   //This function will get and update the count(data) on the given path at the same time:
 //   /*Logic behind the scene:
@@ -207,4 +207,3 @@ export const fetchRealTimeData = (path, setState, userStatus) => {
 //     });
 //   });
 // }
-

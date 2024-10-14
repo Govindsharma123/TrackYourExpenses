@@ -66,7 +66,6 @@ const ExpenseList = (props) => {
   };
 
   // Calculate total expenses
-  // console.log(expenses)
   let totalExpenses = props.expenses?.reduce(
     (acc, expense) => acc + parseFloat(expense.amount) || 0,
     0

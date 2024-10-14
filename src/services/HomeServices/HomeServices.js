@@ -44,6 +44,7 @@ export const getExpenseList = async(uid) => {
         Object.keys(snapshot).forEach((dateKey) => {
           if(dateKey !== 'lastKey'){
             Object.keys(snapshot[dateKey]).forEach((expenseKey) => {
+              // console.log(expenseKey)
               if (expenseKey !== 'lastKey') {
                 expenseArray.push({
                   id: expenseKey,
@@ -126,6 +127,46 @@ export const saveNewCategory = (newCategory) => {
   }
 )}
 
-export const updateExpense = (expense)=> {
+export const updateExpense = ( id, expense)=> {
+  console.log(expense);
+  return new Promise(async(resolve, reject) => {
+    try{
+      const year = dayjs(expense.date).format('YYYY');
+      const month = dayjs(expense.date).format('MMM');
+      const date = dayjs(expense.date).format('YYYY-MM-DD');
+      const uid = localStorage.getItem('uid');
 
+      if(!uid){
+        toast.error('uid not found');
+      }
+
+      // const expenseid = expense.id;
+      // if(!expenseid){
+      //   toast.error('expense id not found');
+      //   resolve(console.log('error in updating expense'));
+      //   return;
+      // }
+
+      const path = `Data/${uid}/Expense/${year}/${month}/${date}/${id}`
+      console.log(path)
+      const snapshot = {
+        category: expense.category,
+        amount: expense.amount,
+        detail: expense.detail,
+        date: expense.date,
+        modeOfExpense: expense.modeOfExpense,
+      }
+
+      console.log('snapshot', snapshot)
+
+      await saveData(path, snapshot);
+      // toast.success('expense updated successfully')
+      resolve(expense);
+    }
+    catch(error){
+      console.error('Error in updating expense:', error);
+      reject(error);
+    }
+    
+  })
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './expenseList.css';
-import { getAllCategories, saveExpense, saveNewCategory } from '../../services/HomeServices/HomeServices';
+import { getAllCategories, saveExpense, saveNewCategory, updateExpense } from '../../services/HomeServices/HomeServices';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -23,7 +23,7 @@ const AddExpenseModal = (props
   // expenseToEdit,
 // }
 ) => {
-  console.log('props', props);
+  // console.log('props', props);
   const [category, setCategory] = useState('');
   const [categories, setCategories] = useState([]);
   const [filteredCategories, setFilteredCategories] = useState([]);
@@ -34,7 +34,7 @@ const AddExpenseModal = (props
 
   useEffect(()=> {
     if(props.expenseToEdit && props.showModal) {
-    console.log('expenseToEdit', props.expenseToEdit);
+    // console.log('expenseToEdit', props.expenseToEdit);
       props.setDate(props.expenseToEdit.date)
       props.setDetail(props.expenseToEdit.detail)
       props.setAmount(props.expenseToEdit.amount)
@@ -92,11 +92,19 @@ const AddExpenseModal = (props
       return;
     }
 
+  
+
     // Check if the category is unique and hasn't been saved
   if (isCategoryUnique) {
     toast.error('You must save the new category before adding the expense.');
     return;
   }
+
+  // const existingCategory = categories.find(cat => cat.name === category);
+  // if (!existingCategory) {
+  //   toast.error('Category not found');
+  //   return;
+  // }
 
   
     // Saving the expense details in db
@@ -111,13 +119,17 @@ const AddExpenseModal = (props
     
   // If `props.expenseToEdit` is set, update the existing expense
   if (props.expenseToEdit) {
+    console.log(props.expenseToEdit)
     // Update the existing expense in the database
-    saveExpense({ ...props.expenseToEdit, ...expenseData })
+    updateExpense(props.expenseToEdit.id , expenseData)
       .then(() => {
         props.setExpenses((prevExpenses) =>
-          prevExpenses.map((expense) =>
-            expense.id === props.expenseToEdit.id ? { ...expense, ...expenseData } : expense
-          )
+        { console.log('prevExpenses', prevExpenses)
+          return prevExpenses.map((expense) =>
+            { console.log(expense)
+              return expense.id === props.expenseToEdit.id ? { ...expense, ...expenseData } : expense
+              }
+          )}
         );
         toast.success('Expense updated successfully');
         clearForm();
