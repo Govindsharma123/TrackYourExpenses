@@ -83,6 +83,7 @@ const ExpenseList = (props) => {
 
     // Handle edit
     const handleEdit = (expense) => {
+    
       console.log(expense)
       props.setExpenseToEdit(expense); // Pass the selected expense to modal
       props.setShowModal(true); // Open modal
