@@ -126,3 +126,6 @@ export const saveNewCategory = (newCategory) => {
   }
 )}
 
+export const updateExpense = (expense)=> {
+
+}

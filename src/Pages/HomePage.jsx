@@ -10,6 +10,14 @@ const HomePage = () => {
   const [showModal,   setShowModal] = useState(false);
   const [expenses, setExpenses] = useState([]);
   const [modeOfExpense, setModeOfExpense] = useState('');
+  const [expenseToEdit, setExpenseToEdit] = useState(null); // For passing expense to modal
+
+
+
+  const handleAddExpenseClick = () => {
+    setExpenseToEdit(null); // Reset for new entry
+    setShowModal(true); // Open modal for adding a new expense
+  };
 
   return (
 
@@ -26,15 +34,18 @@ const HomePage = () => {
         expenses={expenses} setExpenses={setExpenses}
         showModal={showModal}
         setShowModal={setShowModal}
+        expenseToEdit={expenseToEdit} setExpenseToEdit={setExpenseToEdit}
         // addExpense={handleAddExpense}
         />
       )}
 
     <ExpenseList
     expenses={expenses} setExpenses={setExpenses}
+    showModal={showModal} setShowModal={setShowModal}
+    expenseToEdit={expenseToEdit} setExpenseToEdit={setExpenseToEdit}
      />
 
-    <button className="add-expense-btn" onClick={() => setShowModal(true)}>
+    <button className="add-expense-btn" onClick={ handleAddExpenseClick}>
       + Add Expense
     </button>
 

@@ -5,25 +5,51 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-const AddExpenseModal = ({
-  showModal,
-  setShowModal,
-  addExpense,
-  date,
-  setDate,
-  detail,
-  setDetail,
-  amount,
-  setAmount,
-  expenses,
-  setExpenses,
-  modeOfExpense,
-  setModeOfExpense
-}) => {
+const AddExpenseModal = (props
+  // {
+  // showModal,
+  // setShowModal,
+  // addExpense,
+  // date,
+  // setDate,
+  // detail,
+  // setDetail,
+  // amount,
+  // setAmount,
+  // expenses,
+  // setExpenses,
+  // modeOfExpense,
+  // setModeOfExpense,
+  // expenseToEdit,
+// }
+) => {
+  console.log('props', props);
   const [category, setCategory] = useState('');
   const [categories, setCategories] = useState([]);
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [isCategoryUnique, setIsCategoryUnique] = useState(true);
+
+  const [editing, setEditing] = useState(false);
+  
+
+  useEffect(()=> {
+    if(props.expenseToEdit && props.showModal) {
+    console.log('expenseToEdit', props.expenseToEdit);
+      props.setDate(props.expenseToEdit.date)
+      props.setDetail(props.expenseToEdit.detail)
+      props.setAmount(props.expenseToEdit.amount)
+      props.setModeOfExpense(props.expenseToEdit.modeOfExpense)
+      setCategory(props.expenseToEdit.category)
+
+     
+      setEditing(true); 
+      // clearForm();
+    }else {
+    
+    clearForm(); 
+    setEditing(false); 
+  }
+  },[props.expenseToEdit])
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -35,18 +61,18 @@ const AddExpenseModal = ({
       }
     };
 
-    if (showModal) fetchCategories();
-  }, [showModal]);
+    if (props.showModal) fetchCategories();
+  }, [props.showModal]);
 
   const handleSave = (e) => {
     e.preventDefault();
     // error toasts
-    if (detail.trim() === '') {
+    if (props.detail.trim() === '') {
       toast.error('Expense detail cannot be empty.');
       return;
     }
 
-    if (amount <= 0) {
+    if (props.amount <= 0) {
       toast.error('Amount must be greater than 0.');
       return;
     }
@@ -56,12 +82,12 @@ const AddExpenseModal = ({
       return;
     }
 
-    if (date.trim() === '') {
+    if (props.date.trim() === '') {
       toast.error('Date cannot be empty.');
       return;
     }
 
-    if (modeOfExpense.trim() === '') {
+    if (props.modeOfExpense.trim() === '') {
       toast.error('Please select a mode of expense.');
       return;
     }
@@ -71,35 +97,56 @@ const AddExpenseModal = ({
     toast.error('You must save the new category before adding the expense.');
     return;
   }
+
   
     // Saving the expense details in db
-    const newExpense = {
-      date: date,
-      detail: detail,
-      amount: amount,
+    const expenseData = {
+      date: props.date,
+      detail: props.detail,
+      amount: props.amount,
       category: category, // Assuming category is now an object
-      modeOfExpense: modeOfExpense,
+      modeOfExpense: props.modeOfExpense,
     };
 
-    saveExpense(newExpense)
+    
+  // If `props.expenseToEdit` is set, update the existing expense
+  if (props.expenseToEdit) {
+    // Update the existing expense in the database
+    saveExpense({ ...props.expenseToEdit, ...expenseData })
       .then(() => {
-        setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
-
-        toast.success('Expense added successfully');
+        props.setExpenses((prevExpenses) =>
+          prevExpenses.map((expense) =>
+            expense.id === props.expenseToEdit.id ? { ...expense, ...expenseData } : expense
+          )
+        );
+        toast.success('Expense updated successfully');
         clearForm();
-        setShowModal(false);
+        props.setShowModal(false);
       })
       .catch(() => {
-        toast.error('Error in saving expense. Please try again later.');
+        toast.error('Error updating expense. Please try again later.');
       });
-  };
+  } else {
+    // Otherwise, add a new expense
+    saveExpense(expenseData)
+      .then(() => {
+        props.setExpenses((prevExpenses) => [...prevExpenses, expenseData]);
+        toast.success('Expense added successfully');
+        clearForm();
+        props.setShowModal(false);
+      })
+      .catch(() => {
+        toast.error('Error saving expense. Please try again later.');
+      });
+  }
+};
 
   const clearForm = () => {
-    setDate('');
-    setDetail('');
-    setAmount('');
+    props.setDate('');
+    props.setDetail('');
+    props.setAmount('');
     setCategory('');
-    setModeOfExpense('');
+    props.setModeOfExpense('');
   };
 
   // Handling category change
@@ -147,15 +194,17 @@ const AddExpenseModal = ({
   };
 
   const handleClose = () => {
-    setShowModal(false);
+    props.setShowModal(false);
     clearForm();
   };
 
   return (
-    <div className={`modal ${showModal ? 'modal-show' : ''}`}>
+    <div className={`modal ${props.showModal ? 'modal-show' : ''}`}>
       <div className="modal-content">
         <div className="modal-header">
-          <h2>Add New Expense</h2>
+          {props.expenseToEdit ? 
+          <h2> Edit Expense</h2> :
+          <h2>Add New Expense</h2>}
           <button className="close-btn" onClick={handleClose}>
             &times;
           </button>
@@ -167,8 +216,8 @@ const AddExpenseModal = ({
             <input
               type="date"
               name="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              value={props.date}
+              onChange={(e) => props.setDate(e.target.value)}
               required
             />
           </div>
@@ -213,8 +262,8 @@ const AddExpenseModal = ({
             <input
               type="text"
               name="type"
-              value={detail}
-              onChange={(e) => setDetail(e.target.value)}
+              value={props.detail}
+              onChange={(e) => props.setDetail(e.target.value)}
               placeholder="e.g., 2 samose"
               required
             />
@@ -225,8 +274,8 @@ const AddExpenseModal = ({
             <input
               type="number"
               name="amount"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              value={props.amount}
+              onChange={(e) => props.setAmount(e.target.value)}
               placeholder="e.g., 50.00"
               step="0.01"
               min="0"
@@ -239,8 +288,8 @@ const AddExpenseModal = ({
             <input
               type="text"
               name="mode"
-              value={modeOfExpense}
-              onChange={(e) => setModeOfExpense(e.target.value)}
+              value={props.modeOfExpense}
+              onChange={(e) => props.setModeOfExpense(e.target.value)}
               placeholder="e.g., Paytm"
               required
             />
@@ -248,7 +297,7 @@ const AddExpenseModal = ({
 
           <div className="form-actions">
             <button type="button" className="save-btn" onClick={handleSave}>
-              Save Expense
+              {props.expenseToEdit ? "save changes" : "save"}
             </button>
             <button type="button" className="cancel-btn" onClick={handleClose}>
               Cancel
