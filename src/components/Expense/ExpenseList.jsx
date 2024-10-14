@@ -58,7 +58,7 @@ const ExpenseList = (props) => {
         return faFilm;
       case "transportation":
         return faCar;
-      case "dining out":
+      case "food":
         return faUtensils;
       case "subscriptions":
         return faTv;
@@ -137,19 +137,23 @@ const ExpenseList = (props) => {
                   <FontAwesomeIcon icon={getIconForType(expense.detail)} />
                 </div>
                 <div className="expense-info">
+                  <div style={{display:'flex'}}>
                   <div className="expense-date">
                     {dayjs(expense.date).format("DD MMM YYYY")}
                   </div>
                   <div>
-                  <CiEdit onClick={()=>handleEdit(expense)} style={{cursor:'pointer'}}/>
+                  <CiEdit onClick={()=>handleEdit(expense)} style={{cursor:'pointer', marginLeft:'85px'}}/>
+                  </div>
                   </div>
                   <div className="expense-type">{expense.detail}</div>
                   <div className="expense-amount">₹ {expense.amount}</div>
-                  <div className="expense-category"> {expense.category}</div>
-                  <div className="expense-mode">
+                 <div style={{display:'flex'}}>
+                 <div className="expense-category"> {expense.category}</div>
+                  <div className="expense-mode" style={{marginLeft:'80px'}}>
                     <FontAwesomeIcon icon={getIconForMode(expense.modeOfExpense)} />{" "}
                     {expense.modeOfExpense}
                   </div>
+                 </div>
                 </div>
               </div>
             ))
