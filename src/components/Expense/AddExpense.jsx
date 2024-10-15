@@ -36,6 +36,8 @@ const AddExpenseModal = (
   const [isCategoryUnique, setIsCategoryUnique] = useState(true);
   const [loadingCategories, setLoadingCategories] = useState(true); // <-- Loading state for categories
   const [editing, setEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isCategoryValid, setIsCategoryValid] = useState(false); // <-- New state to track button disable
 
  
   useEffect(() => {
@@ -180,7 +182,7 @@ const AddExpenseModal = (
     setCategory(input);
 
     const filtered = categories.filter(
-      (cat) => cat.name && cat.name.toLowerCase().includes(input.toLowerCase())
+      (cat) => cat.name && cat.name.toLowerCase().includes(input.toLowerCase().trim())
     );
     setFilteredCategories(filtered);
 
@@ -190,6 +192,9 @@ const AddExpenseModal = (
     );
     // console.log(isUnique, categories);
     setIsCategoryUnique(isUnique);
+
+      // Set validity of category input (disable "+" button if category is invalid)
+      setIsCategoryValid(input.trim().length > 0);
   };
 
   // Handling category selection from the suggestions
@@ -200,16 +205,21 @@ const AddExpenseModal = (
   };
 
   const handleAddCategory = async () => {
-    if (category.trim() === "") {
+    if(isSaving){return;}
+
+    const trimmedCategory = category.trim();  // Trim spaces before saving
+
+    if (trimmedCategory === "") {
       toast.error("Please enter a valid category.");
       return;
     }
 
+    setIsSaving(true);
+
     try {
-      const newCategory = {
-        name: category,
-      };
+      const newCategory = { name: trimmedCategory };
       await saveNewCategory(newCategory);
+
       // Add the new category to the list and select it
     setCategories((prevCategories) => [...prevCategories, newCategory]);
 
@@ -221,6 +231,8 @@ const AddExpenseModal = (
     } catch (error) {
       console.error("Error adding category:", error);
       toast.error("Failed to add new category.");
+    } finally{
+      setIsSaving(false);
     }
   };
 
@@ -284,7 +296,8 @@ const AddExpenseModal = (
                   style={{ height: "40px" }}
                   onClick={handleAddCategory}
                   type="button"
-                >
+                  disabled={!isCategoryValid} // Disable button if category input is invalid
+                  >
                   +
                 </button>
               )}

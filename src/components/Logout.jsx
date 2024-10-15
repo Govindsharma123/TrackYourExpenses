@@ -8,11 +8,14 @@ const Logout = () => {
   const navigate = useNavigate();
   const [uid, setUid] = useState(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [name, setName] = useState(null);
 
   useEffect(() => {
     const storedUid = localStorage.getItem("uid");
+    const storedName = localStorage.getItem("Name");
     if(storedUid){
       setUid(storedUid);
+      setName(storedName);
     }
     else {
       navigate("/"); // Redirect to login if no uid is found
@@ -40,36 +43,31 @@ const Logout = () => {
   }
 
   return (
-    <div>
-      {uid && 
-      <button
-      onClick={confirmLogout}
-      style={{
-        padding: "10px 20px",
-        fontSize: '16px',
-        cursor:'pointer',
-        backgroundColor:'#ff4d4d',
-        color: 'white',
-        border: "none",
-        borderRadius: "5px",
-      }}
-      >
-        Logout
-      </button>}
-     {/* Confirmation Modal */}
-     {showLogoutModal && (
-            <div className="delete-modal">
-              <div className="delete-modal-content">
-                <h3>Confirm Logout</h3>
-                <p>Are you sure you want to log out?</p>
-                <div className="modal-actions">
+    <>
+      <div className="header">
+        {uid && (
+          <div className="user-info" >
+            <h2 className="greeting">Hi, {name}!</h2>
+            <button className="logout-btn" onClick={confirmLogout}>
+              Logout
+            </button>
+          </div>
+        )}
+        {/* Confirmation Modal */}
+        {showLogoutModal && (
+          <div className="delete-modal">
+            <div className="delete-modal-content">
+              <h3>Confirm Logout</h3>
+              <p>Are you sure you want to log out?</p>
+              <div className="modal-actions">
                 <button onClick={handleLogout} className="confirm-btn">Yes, Logout</button>
                 <button onClick={cancelLogout} className="cancel-btn">Cancel</button>
-                </div>
               </div>
             </div>
-          )}
-    </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

@@ -15,7 +15,7 @@ export const saveExpense = (newExpense) => {
     
     const uid = localStorage.getItem('uid');
     const lastKey = await getLastKey(`Data/${uid}/Expense/${year}/${month}/${date}/lastKey`, "");
-    
+
     if(!uid){
       toast.error('Please login to save expenses');
       resolve(console.log('error in saving expense'));
@@ -107,12 +107,29 @@ export const getAllCategories = () => {
 
 export const saveNewCategory = (newCategory) => {
   return new Promise(async(resolve) => {
-    const existingCategories = await getAllCategories();
+   
     const uid = localStorage.getItem('uid');
-    //check
-    const isCategoryExists = existingCategories.some((category) => {
-      return typeof category === 'string' && category.toLowerCase() === newCategory.toLowerCase();
-    });
+
+        // To prevent simultaneous clicks, we disable the save operation while in progress
+        if (!uid || !newCategory) {
+          toast.error('Invalid user or category');
+          resolve(null);
+          return;
+        }
+    
+        const existingCategories = await getAllCategories();
+      // Function to normalize strings: convert to lowercase and trim spaces
+      const normalizeCategory = (category) => {
+        return category.toLowerCase().trim();
+      };
+
+      // Check if the category already exists in the list
+      const isCategoryExists = existingCategories.some((category) => {
+        return (
+          typeof category === 'string' &&
+          normalizeCategory(category) === normalizeCategory(newCategory)
+        );
+      });
 
     if(isCategoryExists) {
       toast.error('Category already exists');
