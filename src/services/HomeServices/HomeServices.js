@@ -12,8 +12,10 @@ export const saveExpense = (newExpense) => {
     const year = dayjs(newExpense.date).format('YYYY');
     const month = dayjs(newExpense.date).format('MMM');
     const date = dayjs(newExpense.date).format('YYYY-MM-DD');
-    const lastKey = await getLastKey(`Data/${uid}/Expense/${year}/${month}/${date}/lastKey`, "");
+    
     const uid = localStorage.getItem('uid');
+    const lastKey = await getLastKey(`Data/${uid}/Expense/${year}/${month}/${date}/lastKey`, "");
+    
     if(!uid){
       toast.error('Please login to save expenses');
       resolve(console.log('error in saving expense'));
@@ -23,6 +25,7 @@ export const saveExpense = (newExpense) => {
     // console.log('lastKey', lastKey);
     if (newExpense && uid != null){
       const path = `Data/${uid}/Expense/${year}/${month}/${date}/${lastKey}`;
+      console.log('path', path)
       saveData(path,newExpense);
       saveData(`Data/${uid}/Expense/${year}/${month}/${date}`, {lastKey});
 

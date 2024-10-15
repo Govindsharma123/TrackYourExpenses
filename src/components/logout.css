@@ -27,6 +27,7 @@
 .confirm-btn, .cancel-btn {
   padding: 10px 20px;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .confirm-btn {

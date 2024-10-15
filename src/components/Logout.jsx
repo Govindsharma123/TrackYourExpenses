@@ -73,44 +73,5 @@ const Logout = () => {
   );
 };
 
-const modalStyles = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  zIndex: 1000,
-};
-
-const modalContentStyles = {
-  backgroundColor: 'white',
-  padding: '20px',
-  borderRadius: '8px',
-  boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-};
-
-const confirmButtonStyles = {
-  padding: '10px 15px',
-  fontSize: '16px',
-  cursor: 'pointer',
-  backgroundColor: '#ff4d4d',
-  color: 'white',
-  border: 'none',
-  borderRadius: '5px',
-  marginRight: '10px',
-};
-
-const cancelButtonStyles = {
-  padding: '10px 15px',
-  fontSize: '16px',
-  cursor: 'pointer',
-  backgroundColor: '#ccc',
-  border: 'none',
-  borderRadius: '5px',
-};
 
 export default Logout
