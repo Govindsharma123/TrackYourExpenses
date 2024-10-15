@@ -21,8 +21,10 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const uid = result.user.uid;
       console.log('uid', uid);
-      if(uid !== null){
+      if(uid != null){
+        console.log('user',uid)
         localStorage.setItem("uid", uid);
+        
       }
       Navigate("/home");
     } catch (error) {
