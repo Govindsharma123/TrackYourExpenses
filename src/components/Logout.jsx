@@ -23,7 +23,7 @@ const Logout = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      toast.success('Logged out successfully')
+      toast.success('logged out successfully')
       localStorage.removeItem("uid");
       navigate("/"); // Redirect to login after logout
     } catch (error) {

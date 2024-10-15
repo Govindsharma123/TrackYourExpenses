@@ -32,6 +32,7 @@ const ExpenseList = (props) => {
  
 
   const uid = localStorage.getItem("uid");
+  console.log(uid)
 
 
   useEffect(() => {
