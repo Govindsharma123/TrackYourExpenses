@@ -8,6 +8,7 @@ import {
 } from "../../services/HomeServices/HomeServices";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import dayjs from "dayjs";
 
 const AddExpenseModal = (
   props
@@ -36,6 +37,7 @@ const AddExpenseModal = (
   const [loadingCategories, setLoadingCategories] = useState(true); // <-- Loading state for categories
   const [editing, setEditing] = useState(false);
 
+ 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -71,6 +73,12 @@ const AddExpenseModal = (
       setEditing(false);
     }
   }, [props.expenseToEdit, loadingCategories]);
+
+  useEffect(()=>{
+    const today = dayjs().format("DD-MM-YYYY");
+    console.log(today)
+    props.setDate(today)
+  },[props.showModal])
 
   
 
@@ -236,6 +244,7 @@ const AddExpenseModal = (
         </div>
 
         <form>
+          {console.log(props.date)}
           <div className="form-group">
             <label htmlFor="date">Date</label>
             <input

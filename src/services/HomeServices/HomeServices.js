@@ -170,3 +170,7 @@ export const updateExpense = ( id, expense)=> {
     
   })
 }
+
+export const deleteExpense = (id, expense) => {
+  
+}

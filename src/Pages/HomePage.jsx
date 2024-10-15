@@ -2,6 +2,7 @@ import React, { useState } from "react";
 // import Home from "../components/Home";
 import ExpenseList from "../components/Expense/ExpenseList";
 import AddExpenseModal from "../components/Expense/AddExpense";
+import Logout from "../components/Logout";
 
 const HomePage = () => {
   const [date, setDate ] = useState('');
@@ -22,7 +23,13 @@ const HomePage = () => {
   return (
 
     <>
-     
+      <div style={{
+        position: 'absolute',
+        top : '10px',
+        right: '20px'
+        }}>
+      <Logout/>
+      </div>
 
       {showModal && (
         <AddExpenseModal 
