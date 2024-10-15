@@ -20,6 +20,8 @@ import { deleteExpense, getExpenseList } from "../../services/HomeServices/HomeS
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { toast } from "react-toastify";
+import ClipLoader from "react-spinners/ClipLoader";
+
 
 
 const ExpenseList = (props) => {
@@ -105,7 +107,6 @@ const ExpenseList = (props) => {
 
     // Handle edit
     const handleEdit = (expense) => {
-    
       // console.log(expense)
       props.setExpenseToEdit(expense); // Pass the selected expense to modal
       props.setShowModal(true); // Open modal
@@ -151,9 +152,16 @@ const ExpenseList = (props) => {
         <h3>Recent Expenses</h3>
         <div className="expense-items">
           {loading ? (
-            <p>Loading...</p>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' }}>
+              <ClipLoader
+                color="blue"
+                loading={loading}
+                size={50}
+                aria-label="Loading Spinner"
+              />
+            </div>
           ) : props.expenses.length === 0 ? (
-            <p>No expenses available</p>
+            <p style={{ textAlign: 'center', fontSize: '20px', color: 'gray' }}>No expenses available</p>
           ) : (
             props.expenses.map((expense) => (
               <div className="expense-card" key={expense.id}>
@@ -191,8 +199,8 @@ const ExpenseList = (props) => {
       {showDeleteModal && (
         <div className="delete-modal">
           <div className="delete-modal-content">
-            <h3>This expense will be deleted permanently.</h3>
-            <h4>Are you sure ?</h4>
+            <h3>Confirm delete</h3>
+            <h4>Are you sure, you want to delete this expense</h4>
               <div className="modal-actions">
                 <button onClick={confirmDelete} className="confirm-btn">Delete</button>
                 <button onClick={cancelDelete} className="cancel-btn">Cancel</button>

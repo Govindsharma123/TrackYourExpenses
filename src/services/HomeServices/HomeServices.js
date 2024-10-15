@@ -2,7 +2,8 @@ import dayjs from "dayjs";
 import { getData, getLastKey, RemoveData, saveData } from "../dbServices"
 import { toast } from "react-toastify";
 
- const uid = localStorage.getItem('uid');
+
+
  
 
 
@@ -12,8 +13,15 @@ export const saveExpense = (newExpense) => {
     const month = dayjs(newExpense.date).format('MMM');
     const date = dayjs(newExpense.date).format('YYYY-MM-DD');
     const lastKey = await getLastKey(`Data/${uid}/Expense/${year}/${month}/${date}/lastKey`, "");
+    const uid = localStorage.getItem('uid');
+    if(!uid){
+      toast.error('Please login to save expenses');
+      resolve(console.log('error in saving expense'));
+      return;
+    }
+    console.log(uid)
     // console.log('lastKey', lastKey);
-    if (newExpense){
+    if (newExpense && uid != null){
       const path = `Data/${uid}/Expense/${year}/${month}/${date}/${lastKey}`;
       saveData(path,newExpense);
       saveData(`Data/${uid}/Expense/${year}/${month}/${date}`, {lastKey});
@@ -23,12 +31,14 @@ export const saveExpense = (newExpense) => {
       resolve(newExpense);
     } 
     else{
+      toast.error('error in saving expense');
       resolve(console.log('error in saving expense'));
     }
   }
 )}
 
 export const getExpenseList = async(uid) => {
+ 
   return new Promise(async(resolve, reject) => {
     const year = dayjs().format('YYYY');
     const month = dayjs().format('MMM');
@@ -71,6 +81,7 @@ export const getExpenseList = async(uid) => {
 
 export const getAllCategories = () => {
   return new Promise(async(resolve) => {
+    const uid = localStorage.getItem('uid');
     const categoryPath = `Data/${uid}/Category`;
     const snapshot = await getData(categoryPath);
     // console.log(snapshot)
@@ -94,14 +105,10 @@ export const getAllCategories = () => {
 export const saveNewCategory = (newCategory) => {
   return new Promise(async(resolve) => {
     const existingCategories = await getAllCategories();
-
+    const uid = localStorage.getItem('uid');
     //check
     const isCategoryExists = existingCategories.some((category) => {
-      if (typeof category === 'string') {
-        return category.toLowerCase() === newCategory.toLowerCase();
-      }
-          
-      return false; // In case the category is not a string, ignore it
+      return typeof category === 'string' && category.toLowerCase() === newCategory.toLowerCase();
     });
 
     if(isCategoryExists) {
@@ -138,6 +145,7 @@ export const updateExpense = ( id, expense)=> {
 
       if(!uid){
         toast.error('uid not found');
+        return;
       }
 
      
