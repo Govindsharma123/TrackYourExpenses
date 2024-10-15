@@ -120,18 +120,24 @@ const ExpenseList = (props) => {
       setShowDeleteModal(true); // Show confirmation modal
     }
 
-    const confirmDelete = async() => {
-      if(selectedExpense){
-        await deleteExpense(selectedExpense.id, selectedExpense);
-        toast.success('Expense deleted successfully')
-        // Remove deleted expense from the list
-      props.setExpenses((prevExpenses) =>
-        prevExpenses.filter((expense) => expense.id !== selectedExpense.id)
-      );
-      setShowDeleteModal(false); // Close modal after deletion
-    }
-  };
-
+    const confirmDelete = async () => {
+      if (selectedExpense) {
+        try {
+          await deleteExpense(selectedExpense.id, selectedExpense);
+          toast.success('Expense deleted successfully');
+          // Remove deleted expense from the list
+          props.setExpenses((prevExpenses) =>
+            prevExpenses.filter((expense) => expense.id !== selectedExpense.id)
+          );
+        } catch (error) {
+          console.error("Failed to delete expense:", error);
+          toast.error("Error deleting expense.");
+        } finally {
+          setShowDeleteModal(false); // Close modal after deletion
+        }
+      }
+    };
+    
   const cancelDelete = () => {
     setSelectedExpense(null);
     setShowDeleteModal(false);
@@ -202,8 +208,8 @@ const ExpenseList = (props) => {
       {showDeleteModal && (
         <div className="delete-modal">
           <div className="delete-modal-content">
-            <h3>Confirm delete</h3>
-            <h4>Are you sure, you want to delete this expense</h4>
+            <h3>Confirmation !</h3>
+            <h4>Are you sure, you want to delete this expense ?</h4>
               <div className="modal-actions">
                 <button onClick={confirmDelete} className="confirm-btn">Delete</button>
                 <button onClick={cancelDelete} className="cancel-btn">Cancel</button>

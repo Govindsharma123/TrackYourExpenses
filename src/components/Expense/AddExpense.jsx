@@ -182,7 +182,7 @@ const AddExpenseModal = (
     setCategory(input);
 
     const filtered = categories.filter(
-      (cat) => cat.name && cat.name.toLowerCase().includes(input.toLowerCase().trim())
+      (cat) => cat.name && cat.name.toLowerCase().includes(input.trim().toLowerCase().trim())
     );
     setFilteredCategories(filtered);
 
@@ -296,7 +296,7 @@ const AddExpenseModal = (
                   style={{ height: "40px" }}
                   onClick={handleAddCategory}
                   type="button"
-                  disabled={!isCategoryValid} // Disable button if category input is invalid
+                  disabled={!isCategoryUnique} // Disable button if category input is invalid
                   >
                   +
                 </button>

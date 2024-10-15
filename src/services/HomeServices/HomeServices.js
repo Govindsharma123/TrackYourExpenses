@@ -195,6 +195,7 @@ export const updateExpense = ( id, expense)=> {
 }
 
 export const deleteExpense = async(id, expense) => {
+  console.log(expense)
   return new Promise((resolve, reject) => {
     const uid = localStorage.getItem('uid');
     if(!uid){
