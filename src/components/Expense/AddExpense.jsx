@@ -76,7 +76,7 @@ const AddExpenseModal = (
 
   useEffect(()=>{
     const today = dayjs().format("DD-MM-YYYY");
-    console.log(today)
+    // console.log(today)
     props.setDate(today)
   },[props.showModal])
 
@@ -188,7 +188,7 @@ const AddExpenseModal = (
     const isUnique = !categories.some(
       (cat) => cat.name.toLowerCase() === input.toLowerCase()
     );
-    console.log(isUnique, categories);
+    // console.log(isUnique, categories);
     setIsCategoryUnique(isUnique);
   };
 
@@ -244,7 +244,7 @@ const AddExpenseModal = (
         </div>
 
         <form>
-          {console.log(props.date)}
+          {/* {console.log(props.date)} */}
           <div className="form-group">
             <label htmlFor="date">Date</label>
             <input

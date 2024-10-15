@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { getData, getLastKey, saveData } from "../dbServices"
+import { getData, getLastKey, RemoveData, saveData } from "../dbServices"
 import { toast } from "react-toastify";
 
  const uid = localStorage.getItem('uid');
@@ -140,12 +140,7 @@ export const updateExpense = ( id, expense)=> {
         toast.error('uid not found');
       }
 
-      // const expenseid = expense.id;
-      // if(!expenseid){
-      //   toast.error('expense id not found');
-      //   resolve(console.log('error in updating expense'));
-      //   return;
-      // }
+     
 
       const path = `Data/${uid}/Expense/${year}/${month}/${date}/${id}`
       console.log(path)
@@ -171,6 +166,31 @@ export const updateExpense = ( id, expense)=> {
   })
 }
 
-export const deleteExpense = (id, expense) => {
-  
+export const deleteExpense = async(id, expense) => {
+  return new Promise((resolve, reject) => {
+    const uid = localStorage.getItem('uid');
+    if(!uid){
+      toast.error('user not found');
+      reject("User not logged in");
+      return;
+    }
+
+    const year = dayjs(expense.date).format('YYYY');
+    const month = dayjs(expense.date).format('MMM');
+    const date = dayjs(expense.date).format('YYYY-MM-DD');
+
+    const path = `Data/${uid}/Expense/${year}/${month}/${date}/${id}`;
+
+    try {
+      const result = RemoveData(path); // Using the RemoveData service
+      console.log('Expense deleted successfully:', result);
+      resolve(result);
+    } catch (error) {
+      console.error('Error deleting expense:', error);
+      reject(error);
+    }
+  //  else {
+  //   reject("Expense key not found");
+  // }
+})
 }

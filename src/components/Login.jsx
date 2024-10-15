@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { auth, provider, signInWithPopup } from "../Firebase";
 import icon from "../assests/icon.jpg";
 import { FcGoogle } from "react-icons/fc";
@@ -6,6 +6,15 @@ import { useNavigate } from "react-router";
 
 const Login = () => {
   const Navigate = useNavigate();
+
+  // Check if the user is already logged in
+  useEffect(() => {
+    const uid = localStorage.getItem("uid");
+    if (uid) {
+      // If the user is logged in, redirect to the home page
+      Navigate("/home");
+    }
+  }, [Navigate]);
 
   const handleGoogleLogin = async () => {
     try {

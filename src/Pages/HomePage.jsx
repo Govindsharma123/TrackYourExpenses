@@ -25,7 +25,7 @@ const HomePage = () => {
     <>
       <div style={{
         position: 'absolute',
-        top : '10px',
+        top : '15px',
         right: '20px'
         }}>
       <Logout/>

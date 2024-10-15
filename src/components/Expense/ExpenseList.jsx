@@ -16,19 +16,21 @@ import {
   faMobileAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import AddExpenseModal from "./AddExpense";
-import { getExpenseList } from "../../services/HomeServices/HomeServices";
+import { deleteExpense, getExpenseList } from "../../services/HomeServices/HomeServices";
 import { CiEdit } from "react-icons/ci";
+import { MdDelete } from "react-icons/md";
+import { toast } from "react-toastify";
+
 
 const ExpenseList = (props) => {
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedExpense, setSelectedExpense] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
  
-  // const [showModal, setShowModal] = useState(false);
 
   const uid = localStorage.getItem("uid");
-  const year = dayjs().format("YYYY");
-  const month = dayjs().format("MMM");
-  const date = dayjs().format("YYYY-MM-DD");
+
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -104,10 +106,32 @@ const ExpenseList = (props) => {
     // Handle edit
     const handleEdit = (expense) => {
     
-      console.log(expense)
+      // console.log(expense)
       props.setExpenseToEdit(expense); // Pass the selected expense to modal
       props.setShowModal(true); // Open modal
     };
+
+    const handleDelete = (expense) => {
+      setSelectedExpense(expense); // Track the selected expense for deletion
+      setShowDeleteModal(true); // Show confirmation modal
+    }
+
+    const confirmDelete = async() => {
+      if(selectedExpense){
+        await deleteExpense(selectedExpense.id, selectedExpense);
+        toast.success('Expense deleted successfully')
+        // Remove deleted expense from the list
+      props.setExpenses((prevExpenses) =>
+        prevExpenses.filter((expense) => expense.id !== selectedExpense.id)
+      );
+      setShowDeleteModal(false); // Close modal after deletion
+    }
+  };
+
+  const cancelDelete = () => {
+    setSelectedExpense(null);
+    setShowDeleteModal(false);
+  };
 
   return (
     <div className="expense-page">
@@ -142,7 +166,10 @@ const ExpenseList = (props) => {
                     {dayjs(expense.date).format("DD MMM YYYY")}
                   </div>
                   <div>
-                  <CiEdit onClick={()=>handleEdit(expense)} style={{cursor:'pointer', marginLeft:'85px'}}/>
+                  <CiEdit onClick={()=>handleEdit(expense)} style={{cursor:'pointer', marginLeft:'70px', color:'green'}}/>
+                  </div>
+                  <div>
+                    <MdDelete onClick={()=>handleDelete(expense)} style={{cursor:'pointer', marginLeft:'25px', color:"red"}}/>
                   </div>
                   </div>
                   <div className="expense-type">{expense.detail}</div>
@@ -160,14 +187,19 @@ const ExpenseList = (props) => {
           )}
         </div>
       </section>
-{/* 
-      {showModal && (
-        <AddExpenseModal 
-          expenseToEdit={selectedExpense}
-          setShowModal={setShowModal}
-          setExpenses={setExpenses}
-        />
-      )} */}
+
+      {showDeleteModal && (
+        <div className="delete-modal">
+          <div className="delete-modal-content">
+            <h3>This expense will be deleted permanently.</h3>
+            <h4>Are you sure ?</h4>
+              <div className="modal-actions">
+                <button onClick={confirmDelete} className="confirm-btn">Delete</button>
+                <button onClick={cancelDelete} className="cancel-btn">Cancel</button>
+              </div>
+          </div>
+        </div>
+      )} 
     </div>
   );
 };
