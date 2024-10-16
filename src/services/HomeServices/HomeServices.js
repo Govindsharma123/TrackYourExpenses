@@ -155,7 +155,7 @@ export const saveNewCategory = (newCategory) => {
 )}
 
 export const updateExpense = ( id, expense)=> {
-  console.log(expense);
+  // console.log(expense);
   return new Promise(async(resolve, reject) => {
     try{
       const year = dayjs(expense.date).format('YYYY');
@@ -171,7 +171,7 @@ export const updateExpense = ( id, expense)=> {
      
 
       const path = `Data/${uid}/Expense/${year}/${month}/${date}/${id}`
-      console.log(path)
+      // console.log(path)
       const snapshot = {
         category: expense.category,
         amount: expense.amount,

@@ -127,7 +127,7 @@ const ExpenseList = (props) => {
           toast.success('Expense deleted successfully');
           // Remove deleted expense from the list
           props.setExpenses((prevExpenses) =>
-            prevExpenses.filter((expense) => expense.id !== selectedExpense.id)
+            prevExpenses.filter((expense) => expense.id !== selectedExpense.id && expense.date !== selectedExpense.date)
           );
         } catch (error) {
           console.error("Failed to delete expense:", error);

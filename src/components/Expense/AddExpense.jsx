@@ -135,24 +135,36 @@ const AddExpenseModal = (
 
     // If `props.expenseToEdit` is set, update the existing expense
     if (props.expenseToEdit) {
-      console.log(props.expenseToEdit);
+      // console.log(props.expenseToEdit);
       // Update the existing expense in the database
       updateExpense(props.expenseToEdit.id, expenseData)
-        .then(() => {
-          props.setExpenses((prevExpenses) => {
-            return prevExpenses.map((expense) => {
-              return expense.id === props.expenseToEdit.id
-                ? { ...expense, ...expenseData }
-                : expense;
-            });
+      .then(() => {
+        props.setExpenses((prevExpenses) => {
+          return prevExpenses.map((expense) => {
+            // console.log('expense', expense);
+      
+            // Ensure the 'id' is preserved in the updated expense data
+            if (expense.id === props.expenseToEdit.id && expense.date === props.expenseToEdit.date) {
+              return { ...expense, ...expenseData };  // Preserve the original id
+            }
+            return expense;
           });
-          toast.success("Expense updated successfully");
-          clearForm();
-          props.setShowModal(false);
-        })
-        .catch(() => {
-          toast.error("Error updating expense. Please try again later.");
         });
+      
+        toast.success("Expense updated successfully");
+        clearForm();
+        props.setShowModal(false);
+      })
+      .catch(() => {
+        toast.error("Error updating expense. Please try again later.");
+      });
+        //   toast.success("Expense updated successfully");
+        //   clearForm();
+        //   props.setShowModal(false);
+        // })
+        // .catch(() => {
+        //   toast.error("Error updating expense. Please try again later.");
+        // });
     } else {
       // Otherwise, add a new expense
       saveExpense(expenseData)
