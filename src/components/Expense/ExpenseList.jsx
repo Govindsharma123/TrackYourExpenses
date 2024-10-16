@@ -21,6 +21,7 @@ import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { toast } from "react-toastify";
 import ClipLoader from "react-spinners/ClipLoader";
+import { useNavigate } from "react-router";
 
 
 
@@ -30,7 +31,7 @@ const ExpenseList = (props) => {
   const [selectedExpense, setSelectedExpense] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
  
-
+  const navigate = useNavigate();
   const uid = localStorage.getItem("uid");
   const name = localStorage.getItem("Name");
   console.log(uid)
@@ -143,6 +144,10 @@ const ExpenseList = (props) => {
     setShowDeleteModal(false);
   };
 
+  const budgethandle = () => {
+    navigate('/budget');
+  }
+
   return (
     <div className="expense-page">
       {/* Total Expense Section */}
@@ -155,7 +160,9 @@ const ExpenseList = (props) => {
           </p>
         </div>
       </header>
-
+    <button onClick={budgethandle}>
+      Budget
+    </button>
       {/* Expense List Section */}
       <section className="expense-list">
         <h3>Recent Expenses</h3>
