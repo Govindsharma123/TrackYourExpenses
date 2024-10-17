@@ -215,7 +215,7 @@ const handleUpdateBudget = (categoryKey) => {
                       <span>Budget: ₹{savedBudgets[category.id]}</span>
                     </div>
                   ) : (
-                    <div style={{display:'flex', fontSize:'20px', alignItems:'center'}}>
+                    <div style={{display:'flex', fontSize:'20px', alignItems:'center'}} className="save-button">
                     <input
                       type="number"
                       value={budgets[category.id] || ""}
@@ -225,7 +225,7 @@ const handleUpdateBudget = (categoryKey) => {
                       min="0"
                   />
                   <IoMdCheckmarkCircleOutline
-                    onClick={() => handleSubmit(category.div)} // Handle budget update
+                    onClick={() => handleSubmit(category.id)} // Handle budget update
                     style={{ cursor: 'pointer' }}
                   />
                   </div>
