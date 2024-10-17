@@ -93,7 +93,8 @@ export const getAllCategories = () => {
     if(snapshot){
       Object.keys(snapshot).forEach((key) => {
         if(key!== 'lastKey'){
-          categoryArray.push(snapshot[key])
+          let name = snapshot[key].name
+          categoryArray.push({id:key,name})
         }
       })
       resolve(categoryArray);

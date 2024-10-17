@@ -1,13 +1,13 @@
-import dayjs from "dayjs"
+
 import { toast } from "react-toastify";
-import { saveData } from "../dbServices";
+import { getData, saveData } from "../dbServices";
 
 
 export const saveBudget = (year, month, categoryKey ,budgetAmount) => {
   return new Promise(async(resolve) => {
-    const year = dayjs().format('YYYY');
-    const month = dayjs().format('MM');
-
+    // const year = dayjs().format('YYYY');
+    // const month = dayjs().format('MM');
+    console.log(year, month , 'service')
     const uid = localStorage.getItem('uid');
 
     if(!uid){
@@ -31,6 +31,33 @@ export const saveBudget = (year, month, categoryKey ,budgetAmount) => {
     else {
       toast.error('error in saving budget');
       resolve(console.log('error in saving budget '));
+    }
+  })
+}
+
+export const getBudget = (year, month) => {
+  return new Promise(async(resolve) => {
+    const uid = localStorage.getItem('uid');
+    const path = `Data/${uid}/Budget/${year}/${month}`;
+    console.log('path', path)
+
+    const snapshot = await getData(path);
+    const budgetArray = [];
+
+    if(snapshot){
+      console.log('snapshot', snapshot)
+      Object.keys(snapshot).forEach((budgetKey) => {
+        budgetArray.push({
+          id : budgetKey,
+          budget : snapshot[budgetKey].budget
+        })
+      })
+      // console.log('budgetArray', budgetArray)
+      resolve(budgetArray)
+    }
+    else{
+      console.log('No category data found');
+      resolve([]);
     }
   })
 }
