@@ -114,7 +114,7 @@ const AddExpenseModal = (
 
     // Check if the category is unique and hasn't been saved
     if (isCategoryUnique) {
-      toast.error("You must save the new category before adding the expense.");
+      toast.error("you have to save the category first, click on + button to save the category.");
       return;
     }
 

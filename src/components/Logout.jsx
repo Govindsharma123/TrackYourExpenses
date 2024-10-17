@@ -47,7 +47,7 @@ const Logout = () => {
       <div className="header">
         {uid && (
           <div className="user-info" >
-            <h2 className="greeting">Hi, {name}!</h2>
+            {/* <h2 className="greeting">Hi, {name}!</h2> */}
             <button className="logout-btn" onClick={confirmLogout}>
               Logout
             </button>

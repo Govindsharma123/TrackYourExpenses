@@ -34,8 +34,8 @@ const ExpenseList = (props) => {
   const navigate = useNavigate();
   const uid = localStorage.getItem("uid");
   const name = localStorage.getItem("Name");
-  console.log(uid)
-  console.log(name)
+  // console.log(uid)
+  // console.log(name)
 
 
   useEffect(() => {
@@ -120,7 +120,7 @@ const ExpenseList = (props) => {
       setSelectedExpense(expense); // Track the selected expense for deletion
       setShowDeleteModal(true); // Show confirmation modal
     }
-
+    console.log(props.expenses)
     const confirmDelete = async () => {
       if (selectedExpense) {
         try {
@@ -128,7 +128,8 @@ const ExpenseList = (props) => {
           toast.success('Expense deleted successfully');
           // Remove deleted expense from the list
           props.setExpenses((prevExpenses) =>
-            prevExpenses.filter((expense) => expense.id !== selectedExpense.id && expense.date !== selectedExpense.date)
+           {console.log(prevExpenses)
+           return  prevExpenses.filter((expense) =>  expense.date !== selectedExpense.date && expense.id !== selectedExpense.id)}
           );
         } catch (error) {
           console.error("Failed to delete expense:", error);
@@ -163,6 +164,8 @@ const ExpenseList = (props) => {
     <button onClick={budgethandle}>
       Budget
     </button>
+
+   { console.log(props.expenses)}
       {/* Expense List Section */}
       <section className="expense-list">
         <h3>Recent Expenses</h3>
@@ -175,8 +178,11 @@ const ExpenseList = (props) => {
                 size={50}
                 aria-label="Loading Spinner"
               />
+
             </div>
-          ) : props.expenses.length === 0 ? (
+          ) :
+          props.expenses.length === 0 ? (
+            
             <p style={{ textAlign: 'center', fontSize: '20px', color: 'gray' }}>No expenses available</p>
           ) : (
             props.expenses.map((expense) => (

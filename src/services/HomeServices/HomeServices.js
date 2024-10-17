@@ -31,6 +31,7 @@ export const saveExpense = (newExpense) => {
 
 
       console.log('data saved successfully')
+      newExpense.id = lastKey;
       resolve(newExpense);
     } 
     else{
@@ -197,7 +198,7 @@ export const updateExpense = ( id, expense)=> {
 
 export const deleteExpense = async(id, expense) => {
   console.log(expense)
-  return new Promise((resolve, reject) => {
+  return new Promise(async(resolve, reject) => {
     const uid = localStorage.getItem('uid');
     if(!uid){
       toast.error('user not found');
@@ -212,7 +213,7 @@ export const deleteExpense = async(id, expense) => {
     const path = `Data/${uid}/Expense/${year}/${month}/${date}/${id}`;
 
     try {
-      const result = RemoveData(path); // Using the RemoveData service
+      const result = await RemoveData(path); // Using the RemoveData service
       console.log('Expense deleted successfully:', result);
       resolve(result);
     } catch (error) {
