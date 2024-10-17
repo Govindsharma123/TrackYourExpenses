@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { getAllCategories } from "../../services/HomeServices/HomeServices"; // Example service functions
-import { fetchBudget, getBudget, saveBudget } from "../../services/HomeServices/BudgetServices";
+import { fetchBudget, getBudget, saveBudget, updateBudget } from "../../services/HomeServices/BudgetServices";
 import "./Budget.css"; // Import CSS for styling
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { CiEdit } from "react-icons/ci";
 
 const BudgetPage = () => {
   const currentDate = new Date();
@@ -10,7 +11,8 @@ const BudgetPage = () => {
   const [budgets, setBudgets] = useState({});
   const [savedBudgets, setSavedBudgets] = useState({}); // Track saved budgets
   const [month, setMonth] = useState(String(currentDate.getMonth() + 1).padStart(2, "0"));
-  const [year, setYear] = useState(String(currentDate.getFullYear()));
+  const [year, setYear] =  useState(String(currentDate.getFullYear()));
+  const [editingCategory, setEditingCategory] = useState(null);
 
   const months = [
     { value: "01", label: "January" },
@@ -30,15 +32,6 @@ const BudgetPage = () => {
   const currentYear = new Date().getFullYear();
   const yearRange = Array.from(new Array(10), (v, i) => currentYear - i);
 
-  // useEffect(() => {
-    
-  //   setMonth(String(currentDate.getMonth() + 1).padStart(2, "0"));
-  //   setYear(String(currentDate.getFullYear()));
-
-  //   // getAllCategories().then((categories) => setCategories(categories));
-  //   //  fetchBudget();
-  // }, []);
-
   useEffect(() => {
     getAllCategories().then((categories) => setCategories(categories));
     fetchBudget(year,month);
@@ -47,20 +40,20 @@ const BudgetPage = () => {
   const fetchBudget = (selectedYear, selectedMonth) => {
     getBudget(selectedYear, selectedMonth)
       .then((budgetArray) => {
-        console.log('budgetArray,', budgetArray)
+        // console.log('budgetArray,', budgetArray)
         // Map the array of objects into a savedBudgets object with keys as category ids
         const formattedBudgets = budgetArray.reduce((acc, item) => {
           acc[item.id] = item.budget; // Assuming the object structure is { id: categoryKey, budget: amount }
           return acc;
         }, {});
-        console.log('formattedBudgets', formattedBudgets)
+        // console.log('formattedBudgets', formattedBudgets)
         setSavedBudgets(formattedBudgets);
       })
       .catch((error) =>
         console.log(`Error while fetching budget: ${error}`)
       );
   };
-    console.log('savedBudgets',savedBudgets)
+    // console.log('savedBudgets',savedBudgets)
 
   const handleBudgetChange = (categoryKey, value) => {
     setBudgets((prevBudgets) => ({
@@ -69,7 +62,7 @@ const BudgetPage = () => {
     }));
   };
 
-  console.log(year, month)
+  // console.log(year, month)
 
   const handleSubmit = (categoryKey) => {
    
@@ -104,13 +97,44 @@ const BudgetPage = () => {
     return "#fab1a0"; // Pastel peach
   };
 
-  console.log(totalBudget)
+  // console.log(totalBudget)
 
-  const handleEnter =(e, categoryKey)=>{
-    if(e.key === 'Enter'){
-      handleSubmit(categoryKey);
-    }
+  // const handleEnter =(e, categoryKey)=>{
+  //   if(e.key === 'Enter'){
+  //     handleSubmit(categoryKey);
+  //   }
+  // }
+
+  const handleEdit = (categoryKey) => {
+    console.log(categoryKey)
+    setEditingCategory(categoryKey); // Set the category to be edited
+    setBudgets((prev) => ({
+      ...prev,
+      [categoryKey]: savedBudgets[categoryKey], // Autofill the saved budget
+    }));
+  };
+
+const handleUpdateBudget = (categoryKey) => {
+  const budgetAmount = budgets[categoryKey];
+
+  if(budgetAmount > 0){
+    updateBudget(year, month, categoryKey, budgetAmount)
+     .then(() => {
+       console.log(`Budget for category ${categoryKey} updated`);
+       setSavedBudgets((prev) => ({
+         ...prev,
+         [categoryKey]: budgetAmount, // Update the saved budgets object
+       }));
+       setEditingCategory(null); // Reset editing category
+       setBudgets((prev) => ({
+         ...prev,
+         [categoryKey]: "", // Clear the input field after updating
+       }));
+      
+     })
+     .catch((error) => console.error("Error updating budget", error));
   }
+}
 
   return (
     <div className="budget-page">
@@ -161,43 +185,56 @@ const BudgetPage = () => {
       <form className="budget-form" >
         <div className="category-budget-cards">
           {categories.map((category, index) => (
-            <div className="category-budget-card" key={index + 1}>{console.log('categories', categories)}
+            <div className="category-budget-card" key={index + 1}>
+              {/* {console.log('categories', categories)} */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h2 className="category-name" style={{ margin: '0', flexGrow: 1, textAlign: 'center' }}>{category.name}</h2>
-                {console.log(category)}
-                <IoMdCheckmarkCircleOutline style={{ marginLeft: '20px' }} onClick={()=>handleSubmit(category.id)} className="save-button" />
+                {/* {console.log(category)} */}
+                <CiEdit style={{ marginLeft: '20px' }} onClick={()=>handleEdit(category.id)} className="save-button" />
               </div>
               <br />
-              {savedBudgets[index + 1] !== undefined ? (
-                <div className="saved-budget-amount">
-                  <span>Budget: ₹{savedBudgets[index + 1]}</span>
+              {editingCategory === category.id ? (
+                <div className='save-button' style={{display:'flex', fontSize:'20px', alignItems:'center'}}>
+                  <input
+                    type="number"
+                    value={budgets[category.id] || ""}
+                    onChange={(e) => handleBudgetChange(category.id, e.target.value)}
+                    placeholder="Enter budget"
+                    className="budget-input"
+                    min="0"
+                  />
+                  <IoMdCheckmarkCircleOutline
+                    onClick={() => handleUpdateBudget(category.id)} // Handle budget update
+                    style={{ cursor: 'pointer' }}
+                  />
                 </div>
               ) : (
                 <>
-                <input
-                  type="number"
-                  value={budgets[index + 1] || ""}
-                  onChange={(e) =>
-                    handleBudgetChange(index + 1, e.target.value)
-                  }
-                  placeholder="Enter budget"
-                  className="budget-input"
-                  min="0"
-                  onKeyDown={(e)=>handleEnter(e, index+1)}
-                />
-                  
-                    {/* <button type="submit" className="save-button" 
-                    //  disabled={!budgets[index + 1]}> 
-                      Save Budgets
-                    </button> */}
+                  {savedBudgets[index + 1] !== undefined ? (
+                    <div className="saved-budget-amount">
+                      <span>Budget: ₹{savedBudgets[category.id]}</span>
+                    </div>
+                  ) : (
+                    <div style={{display:'flex', fontSize:'20px', alignItems:'center'}}>
+                    <input
+                      type="number"
+                      value={budgets[category.id] || ""}
+                      onChange={(e) => handleBudgetChange(category.id, e.target.value)}
+                      placeholder="Enter budget"
+                      className="budget-input"
+                      min="0"
+                  />
+                  <IoMdCheckmarkCircleOutline
+                    onClick={() => handleSubmit(category.div)} // Handle budget update
+                    style={{ cursor: 'pointer' }}
+                  />
+                  </div>
+                  )}
                 </>
               )}
-                    
             </div>
           ))}
         </div>
-
-  
       </form>
     </div>
   );

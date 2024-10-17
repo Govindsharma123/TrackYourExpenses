@@ -39,13 +39,13 @@ export const getBudget = (year, month) => {
   return new Promise(async(resolve) => {
     const uid = localStorage.getItem('uid');
     const path = `Data/${uid}/Budget/${year}/${month}`;
-    console.log('path', path)
+    // console.log('path', path)
 
     const snapshot = await getData(path);
     const budgetArray = [];
 
     if(snapshot){
-      console.log('snapshot', snapshot)
+      // console.log('snapshot', snapshot)
       Object.keys(snapshot).forEach((budgetKey) => {
         budgetArray.push({
           id : budgetKey,
@@ -59,5 +59,35 @@ export const getBudget = (year, month) => {
       console.log('No category data found');
       resolve([]);
     }
+  })
+}
+
+export const updateBudget = (year, month, categoryKey, budgetAmount )=> {
+  // console.log(budget);
+  return new Promise(async(resolve, reject) => {
+    try{
+      const uid = localStorage.getItem('uid');
+      if(!uid){
+        toast.error('uid not found');
+        return;
+      }
+
+      const path = `Data/${uid}/Budget/${year}/${month}/${categoryKey}`
+
+      const snapshot = {
+        budget : budgetAmount
+      }
+
+      saveData(path, snapshot);
+
+      toast.success('Budget updated successfully');
+
+      resolve(budgetAmount)
+    }
+    catch(error){
+      console.error('Error in updating budget:', error);
+      reject(error);
+    }
+    
   })
 }
