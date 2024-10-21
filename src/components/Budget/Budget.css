@@ -82,15 +82,15 @@
 
   .total-expense-card {
     padding: 20px;
-    z-index: 100;
-    position: relative;
+    z-index: 1;
+    /* position: relative; */
   }
 }
 .expense-card {
   /* Existing styles */
   opacity: 0;
   transform: translateY(20px);
-  animation: fadeInUp 0.5s forwards;
+  /* animation: fadeInUp 0.5s forwards; */
 }
 
 @keyframes fadeInUp {

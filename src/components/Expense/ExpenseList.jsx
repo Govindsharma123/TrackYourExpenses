@@ -15,25 +15,25 @@ import {
   faWallet,
   faMobileAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import { deleteExpense, getExpenseList } from "../../services/HomeServices/HomeServices";
+import {
+  deleteExpense,
+  getExpenseList,
+} from "../../services/HomeServices/HomeServices";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { toast } from "react-toastify";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useNavigate } from "react-router";
 
-
-
 const ExpenseList = (props) => {
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedExpense, setSelectedExpense] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
- 
+
   const navigate = useNavigate();
   const uid = localStorage.getItem("uid");
   const name = localStorage.getItem("Name");
-
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -94,7 +94,10 @@ const ExpenseList = (props) => {
     (acc, expense) => acc + parseFloat(expense.amount) || 0,
     0
   );
-  totalExpenses = typeof totalExpenses === "number" ? totalExpenses: parseFloat(totalExpenses) || 0;
+  totalExpenses =
+    typeof totalExpenses === "number"
+      ? totalExpenses
+      : parseFloat(totalExpenses) || 0;
 
   const getTotalAmountColor = () => {
     if (totalExpenses < 500) return "#81ecec"; // Pastel teal
@@ -102,82 +105,88 @@ const ExpenseList = (props) => {
     return "#fab1a0"; // Pastel peach
   };
 
-    // Handle edit
-    const handleEdit = (expense) => {
-      props.setExpenseToEdit(expense); // Pass the selected expense to modal
-      props.setShowModal(true); // Open modal
-    };
+  // Handle edit
+  const handleEdit = (expense) => {
+    props.setExpenseToEdit(expense); // Pass the selected expense to modal
+    props.setShowModal(true); // Open modal
+  };
 
-    const handleDelete = (expense) => {
-      setSelectedExpense(expense); // Track the selected expense for deletion
-      setShowDeleteModal(true); // Show confirmation modal
-    }
-    const confirmDelete = async () => {
-      if (selectedExpense) {
-        try {
-          await deleteExpense(selectedExpense.id, selectedExpense);
-          toast.success('Expense deleted successfully');
-          // Remove deleted expense from the list
-          props.setExpenses((prevExpenses) =>
-           {
-           return  prevExpenses.filter((expense) =>  expense.date !== selectedExpense.date && expense.id !== selectedExpense.id)
-          }
+  const handleDelete = (expense) => {
+    setSelectedExpense(expense); // Track the selected expense for deletion
+    setShowDeleteModal(true); // Show confirmation modal
+  };
+  const confirmDelete = async () => {
+    if (selectedExpense) {
+      try {
+        await deleteExpense(selectedExpense.id, selectedExpense);
+        toast.success("Expense deleted successfully");
+        // Remove deleted expense from the list
+        props.setExpenses((prevExpenses) => {
+          return prevExpenses.filter(
+            (expense) =>
+              expense.date !== selectedExpense.date &&
+              expense.id !== selectedExpense.id
           );
-        } catch (error) {
-          console.error("Failed to delete expense:", error);
-          toast.error("Error deleting expense.");
-        } finally {
-          setShowDeleteModal(false); // Close modal after deletion
-        }
+        });
+      } catch (error) {
+        console.error("Failed to delete expense:", error);
+        toast.error("Error deleting expense.");
+      } finally {
+        setShowDeleteModal(false); // Close modal after deletion
       }
-    };
-    
+    }
+  };
+
   const cancelDelete = () => {
     setSelectedExpense(null);
     setShowDeleteModal(false);
   };
-
-  
 
   return (
     <div className="expense-page">
       {/* Total Expense Section */}
       <header className="total-expense">
         <div className="total-expense-card">
-        <div class="floating-dollar dollar-1">₹</div>
-    <div class="floating-dollar dollar-2">₹</div>
-    <div class="floating-dollar dollar-3">₹</div>
-    <div class="floating-dollar dollar-4">₹</div>
-    {/* <h1 class="shimmer-text">Shimmering Golden Text</h1> */}
+          <div class="floating-dollar dollar-1">₹</div>
+          <div class="floating-dollar dollar-2">₹</div>
+          <div class="floating-dollar dollar-3">₹</div>
+          <div class="floating-dollar dollar-4">₹</div>
+          {/* <h1 class="shimmer-text">Shimmering Golden Text</h1> */}
           <h2>Total Expenses</h2>
-          <p className="shimmer-text" >
-            {" "}
-            ₹ {Number(totalExpenses).toFixed(2)}
-          </p>
+          <p className="shimmer-text"> ₹ {Number(totalExpenses).toFixed(2)}</p>
         </div>
       </header>
-    {/* <button onClick={budgethandle}>
+      {/* <button onClick={budgethandle}>
       Budget
     </button> */}
 
       {/* Expense List Section */}
-      <section className="expense-list">
+      <section
+        className="expense-list"
+        // style={{ position: "relative" }}
+      >
         <h3>Recent Expenses</h3>
         <div className="expense-items">
           {loading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100px",
+              }}
+            >
               <ClipLoader
                 color="blue"
                 loading={loading}
                 size={50}
                 aria-label="Loading Spinner"
               />
-
             </div>
-          ) :
-          props.expenses.length === 0 ? (
-            
-            <p style={{ textAlign: 'center', fontSize: '20px', color: 'gray' }}>No expenses available</p>
+          ) : props.expenses.length === 0 ? (
+            <p style={{ textAlign: "center", fontSize: "20px", color: "gray" }}>
+              No expenses available
+            </p>
           ) : (
             props.expenses.map((expense) => (
               <div className="expense-card" key={expense.id}>
@@ -185,26 +194,45 @@ const ExpenseList = (props) => {
                   <FontAwesomeIcon icon={getIconForType(expense.detail)} />
                 </div>
                 <div className="expense-info">
-                  <div style={{display:'flex'}}>
-                  <div className="expense-date">
-                    {dayjs(expense.date).format("DD MMM YYYY")}
-                  </div>
-                  <div>
-                  <CiEdit onClick={()=>handleEdit(expense)} style={{cursor:'pointer', marginLeft:'70px', color:'green'}}/>
-                  </div>
-                  <div>
-                    <MdDelete onClick={()=>handleDelete(expense)} style={{cursor:'pointer', marginLeft:'25px', color:"red"}}/>
-                  </div>
+                  <div style={{ display: "flex" }}>
+                    <div className="expense-date">
+                      {dayjs(expense.date).format("DD MMM YYYY")}
+                    </div>
+                    <div>
+                      <CiEdit
+                        onClick={() => handleEdit(expense)}
+                        style={{
+                          cursor: "pointer",
+                          marginLeft: "70px",
+                          color: "green",
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <MdDelete
+                        onClick={() => handleDelete(expense)}
+                        style={{
+                          cursor: "pointer",
+                          marginLeft: "25px",
+                          color: "red",
+                        }}
+                      />
+                    </div>
                   </div>
                   <div className="expense-type">{expense.detail}</div>
                   <div className="expense-amount">₹ {expense.amount}</div>
-                 <div style={{display:'flex'}}>
-                 <div className="expense-category"> {expense.category}</div>
-                  <div className="expense-mode" style={{marginLeft:'80px'}}>
-                    <FontAwesomeIcon icon={getIconForMode(expense.modeOfExpense)} />{" "}
-                    {expense.modeOfExpense}
+                  <div style={{ display: "flex" }}>
+                    <div className="expense-category"> {expense.category}</div>
+                    <div
+                      className="expense-mode"
+                      style={{ marginLeft: "80px" }}
+                    >
+                      <FontAwesomeIcon
+                        icon={getIconForMode(expense.modeOfExpense)}
+                      />{" "}
+                      {expense.modeOfExpense}
+                    </div>
                   </div>
-                 </div>
                 </div>
               </div>
             ))
@@ -217,13 +245,17 @@ const ExpenseList = (props) => {
           <div className="delete-modal-content">
             <h3>Confirmation !</h3>
             <h4>Are you sure, you want to delete this expense ?</h4>
-              <div className="modal-actions">
-                <button onClick={confirmDelete} className="confirm-btn">Delete</button>
-                <button onClick={cancelDelete} className="cancel-btn">Cancel</button>
-              </div>
+            <div className="modal-actions">
+              <button onClick={confirmDelete} className="confirm-btn">
+                Delete
+              </button>
+              <button onClick={cancelDelete} className="cancel-btn">
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
-      )} 
+      )}
     </div>
   );
 };

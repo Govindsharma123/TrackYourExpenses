@@ -4,9 +4,8 @@
   padding: 20px;
   max-width: 1200px;
   margin: auto;
-  position: relative;
+  /* position: relative; */
   background-color: #fefefe;
-  z-index: 1;
 }
 
 /* Total Expense Section */
@@ -28,7 +27,7 @@
   text-align: center;
   width: 100%;
   max-width: 400px;
-  position: relative; /* Ensure card appears above the background */
+  position: relative; 
   /* z-index: 1; */
   overflow: hidden; /* Hide overflow to prevent dollar signs from appearing outside */
   animation: fadeIn 0.5s ease-in-out; /* Fade-in animation */
@@ -121,6 +120,8 @@
 /* Expense List Section */
 .expense-list {
   margin-top: 40px;
+  /* position: relative;
+  z-index: -1; */
 }
 
 .expense-list h3 {

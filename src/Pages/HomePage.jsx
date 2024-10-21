@@ -22,16 +22,7 @@ const HomePage = () => {
   return (
     <>
     <Sidebar/>
-      <div
-        style={{
-          position: "absolute",
-          top: "15px",
-          right: "20px",
-        }}
-      >
-        {/* <Logout /> */}
-      </div>
-
+      
       {showModal && (
         <AddExpenseModal
           date={date}
