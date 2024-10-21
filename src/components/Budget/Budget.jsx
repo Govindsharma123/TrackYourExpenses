@@ -4,8 +4,9 @@ import { fetchBudget, getBudget, saveBudget, updateBudget } from "../../services
 import "./Budget.css"; // Import CSS for styling
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
+import Sidebar from "../Navbar/Sidebar";
 
-const BudgetPage = () => {
+const Budget = () => {
   const currentDate = new Date();
   const [categories, setCategories] = useState([]);
   const [budgets, setBudgets] = useState({});
@@ -121,11 +122,12 @@ const handleUpdateBudget = (categoryKey) => {
 
   return (
     <div className="budget-page">
+      {/* <Sidebar/> */}
       <h1>Set Monthly Budget for Categories</h1>
 
       <header className="total-expense">
         <div className="total-expense-card">
-          <h2>Total Budget for month {month}</h2>
+          <h2>Budget for {month} {year} </h2>
           <p className="total-amount" style={{ color: getTotalAmountColor() }}>
             {" "}
             ₹ {Number(totalBudget).toFixed(2)}
@@ -223,4 +225,4 @@ const handleUpdateBudget = (categoryKey) => {
   );
 };
 
-export default BudgetPage;
+export default Budget;

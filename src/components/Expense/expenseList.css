@@ -6,6 +6,7 @@
   margin: auto;
   position: relative;
   background-color: #fefefe;
+  z-index: 1;
 }
 
 /* Total Expense Section */
@@ -28,6 +29,7 @@
   width: 100%;
   max-width: 400px;
   position: relative; /* Ensure card appears above the background */
+  /* z-index: 1; */
   overflow: hidden; /* Hide overflow to prevent dollar signs from appearing outside */
   animation: fadeIn 0.5s ease-in-out; /* Fade-in animation */
 }

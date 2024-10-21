@@ -2,7 +2,8 @@ import React, { useState } from "react";
 // import Home from "../components/Home";
 import ExpenseList from "../components/Expense/ExpenseList";
 import AddExpenseModal from "../components/Expense/AddExpense";
-import Logout from "../components/Logout/Logout";
+// import Logout from "../components/Logout/Logout";
+import Sidebar from "../components/Navbar/Sidebar";
 
 const HomePage = () => {
   const [date, setDate] = useState("");
@@ -20,6 +21,7 @@ const HomePage = () => {
 
   return (
     <>
+    <Sidebar/>
       <div
         style={{
           position: "absolute",
@@ -27,7 +29,7 @@ const HomePage = () => {
           right: "20px",
         }}
       >
-        <Logout />
+        {/* <Logout /> */}
       </div>
 
       {showModal && (

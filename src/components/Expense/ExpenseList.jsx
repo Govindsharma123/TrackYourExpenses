@@ -137,9 +137,7 @@ const ExpenseList = (props) => {
     setShowDeleteModal(false);
   };
 
-  const budgethandle = () => {
-    navigate('/budget');
-  }
+  
 
   return (
     <div className="expense-page">
@@ -158,9 +156,9 @@ const ExpenseList = (props) => {
           </p>
         </div>
       </header>
-    <button onClick={budgethandle}>
+    {/* <button onClick={budgethandle}>
       Budget
-    </button>
+    </button> */}
 
       {/* Expense List Section */}
       <section className="expense-list">

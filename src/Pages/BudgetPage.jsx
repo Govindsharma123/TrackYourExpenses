@@ -1,10 +1,12 @@
 import React from 'react'
 import Budget from '../components/Budget/Budget'
+import Sidebar from '../components/Navbar/Sidebar'
 
 const BudgetPage = () => {
   return (
     <div>
-      <Budget />
+      <Sidebar/>
+      <Budget/>
     </div>
   )
 }
