@@ -150,9 +150,9 @@ const ExpenseList = (props) => {
     <div class="floating-dollar dollar-2">₹</div>
     <div class="floating-dollar dollar-3">₹</div>
     <div class="floating-dollar dollar-4">₹</div>
-    <h1 class="shimmer-text">Shimmering Golden Text</h1>
+    {/* <h1 class="shimmer-text">Shimmering Golden Text</h1> */}
           <h2>Total Expenses</h2>
-          <p className="total-amount" style={{ color: getTotalAmountColor() }}>
+          <p className="shimmer-text" >
             {" "}
             ₹ {Number(totalExpenses).toFixed(2)}
           </p>
