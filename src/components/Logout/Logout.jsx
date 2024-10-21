@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { auth, provider, signOut } from "../Firebase";
-import './logout.css';
+import { auth, signOut } from "../../Firebase";
+import '../Logout/logout.css';
 import { toast } from 'react-toastify';
 
 const Logout = () => {

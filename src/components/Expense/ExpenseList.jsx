@@ -15,7 +15,6 @@ import {
   faWallet,
   faMobileAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import AddExpenseModal from "./AddExpense";
 import { deleteExpense, getExpenseList } from "../../services/HomeServices/HomeServices";
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
@@ -34,8 +33,6 @@ const ExpenseList = (props) => {
   const navigate = useNavigate();
   const uid = localStorage.getItem("uid");
   const name = localStorage.getItem("Name");
-  // console.log(uid)
-  // console.log(name)
 
 
   useEffect(() => {
@@ -44,7 +41,6 @@ const ExpenseList = (props) => {
 
       try {
         const expenseList = await getExpenseList(uid);
-        // console.log('expense List: ', expenseList)
         props.setExpenses(expenseList);
       } catch (error) {
         console.log("error in fetching expense list", error);
@@ -98,10 +94,7 @@ const ExpenseList = (props) => {
     (acc, expense) => acc + parseFloat(expense.amount) || 0,
     0
   );
-  totalExpenses =
-    typeof totalExpenses === "number"
-      ? totalExpenses
-      : parseFloat(totalExpenses) || 0;
+  totalExpenses = typeof totalExpenses === "number" ? totalExpenses: parseFloat(totalExpenses) || 0;
 
   const getTotalAmountColor = () => {
     if (totalExpenses < 500) return "#81ecec"; // Pastel teal
@@ -111,7 +104,6 @@ const ExpenseList = (props) => {
 
     // Handle edit
     const handleEdit = (expense) => {
-      // console.log(expense)
       props.setExpenseToEdit(expense); // Pass the selected expense to modal
       props.setShowModal(true); // Open modal
     };
@@ -120,7 +112,6 @@ const ExpenseList = (props) => {
       setSelectedExpense(expense); // Track the selected expense for deletion
       setShowDeleteModal(true); // Show confirmation modal
     }
-    console.log(props.expenses)
     const confirmDelete = async () => {
       if (selectedExpense) {
         try {
@@ -128,8 +119,9 @@ const ExpenseList = (props) => {
           toast.success('Expense deleted successfully');
           // Remove deleted expense from the list
           props.setExpenses((prevExpenses) =>
-           {console.log(prevExpenses)
-           return  prevExpenses.filter((expense) =>  expense.date !== selectedExpense.date && expense.id !== selectedExpense.id)}
+           {
+           return  prevExpenses.filter((expense) =>  expense.date !== selectedExpense.date && expense.id !== selectedExpense.id)
+          }
           );
         } catch (error) {
           console.error("Failed to delete expense:", error);
@@ -154,6 +146,11 @@ const ExpenseList = (props) => {
       {/* Total Expense Section */}
       <header className="total-expense">
         <div className="total-expense-card">
+        <div class="floating-dollar dollar-1">₹</div>
+    <div class="floating-dollar dollar-2">₹</div>
+    <div class="floating-dollar dollar-3">₹</div>
+    <div class="floating-dollar dollar-4">₹</div>
+    <h1 class="shimmer-text">Shimmering Golden Text</h1>
           <h2>Total Expenses</h2>
           <p className="total-amount" style={{ color: getTotalAmountColor() }}>
             {" "}
@@ -165,7 +162,6 @@ const ExpenseList = (props) => {
       Budget
     </button>
 
-   { console.log(props.expenses)}
       {/* Expense List Section */}
       <section className="expense-list">
         <h3>Recent Expenses</h3>

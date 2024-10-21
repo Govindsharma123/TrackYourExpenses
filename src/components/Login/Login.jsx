@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { auth, provider, signInWithPopup } from "../Firebase";
-import icon from "../assests/icon.jpg";
+import { auth, provider, signInWithPopup } from "../../Firebase";
+import icon from "../../assests/icon.jpg";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router";
 

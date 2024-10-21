@@ -46,7 +46,7 @@ export const getExpenseList = async(uid) => {
   return new Promise(async(resolve, reject) => {
     const year = dayjs().format('YYYY');
     const month = dayjs().format('MMM');
-    const date = dayjs().format('YYYY-MM-DD');
+    // const date = dayjs().format('YYYY-MM-DD');
     try{
       const path = `Data/${uid}/Expense/${year}/${month}`;
       const snapshot = await getData(path);

@@ -1,35 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./expenseList.css";
-import {
-  getAllCategories,
-  saveExpense,
-  saveNewCategory,
-  updateExpense,
-} from "../../services/HomeServices/HomeServices";
+import {getAllCategories,saveExpense,saveNewCategory,updateExpense} from "../../services/HomeServices/HomeServices";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import dayjs from "dayjs";
 
-const AddExpenseModal = (
-  props
-  // {
-  // showModal,
-  // setShowModal,
-  // addExpense,
-  // date,
-  // setDate,
-  // detail,
-  // setDetail,
-  // amount,
-  // setAmount,
-  // expenses,
-  // setExpenses,
-  // modeOfExpense,
-  // setModeOfExpense,
-  // expenseToEdit,
-  // }
-) => {
-  // console.log('props', props);
+const AddExpenseModal = (props) => {
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState([]);
   const [filteredCategories, setFilteredCategories] = useState([]);
@@ -78,9 +54,8 @@ const AddExpenseModal = (
 
   useEffect(()=>{
     const today = dayjs().format("DD-MM-YYYY");
-    // console.log(today)
-    props.setDate(today)
-  },[props.showModal])
+    props.setDate(today);
+  },[props.showModal]);
 
   
 
@@ -199,10 +174,7 @@ const AddExpenseModal = (
     setFilteredCategories(filtered);
 
     // Check if the entered category is unique
-    const isUnique = !categories.some(
-      (cat) => cat.name.toLowerCase() === input.toLowerCase()
-    );
-    // console.log(isUnique, categories);
+    const isUnique = !categories.some((cat) => cat.name.toLowerCase() === input.toLowerCase());
     setIsCategoryUnique(isUnique);
 
       // Set validity of category input (disable "+" button if category is invalid)

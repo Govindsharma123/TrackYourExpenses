@@ -40,20 +40,17 @@ const BudgetPage = () => {
   const fetchBudget = (selectedYear, selectedMonth) => {
     getBudget(selectedYear, selectedMonth)
       .then((budgetArray) => {
-        // console.log('budgetArray,', budgetArray)
         // Map the array of objects into a savedBudgets object with keys as category ids
         const formattedBudgets = budgetArray.reduce((acc, item) => {
           acc[item.id] = item.budget; // Assuming the object structure is { id: categoryKey, budget: amount }
           return acc;
         }, {});
-        // console.log('formattedBudgets', formattedBudgets)
         setSavedBudgets(formattedBudgets);
       })
       .catch((error) =>
         console.log(`Error while fetching budget: ${error}`)
       );
   };
-    // console.log('savedBudgets',savedBudgets)
 
   const handleBudgetChange = (categoryKey, value) => {
     setBudgets((prevBudgets) => ({
@@ -62,13 +59,10 @@ const BudgetPage = () => {
     }));
   };
 
-  // console.log(year, month)
-
   const handleSubmit = (categoryKey) => {
    
       const budgetAmount = budgets[categoryKey];
       if (budgetAmount > 0) {
-        // console.log(year, month,  categoryKey, budgetAmount)
         saveBudget(year, month,  categoryKey, budgetAmount)
           .then(() => {
             console.log(`Budget for category ${categoryKey} saved`);
@@ -87,23 +81,12 @@ const BudgetPage = () => {
   };
 
  // Calculate total budget
-//  console.log(savedBudgets)
  const totalBudget = Object.values(savedBudgets).reduce((acc, amount) => acc + Number(amount), 0);
-
-
   const getTotalAmountColor = () => {
     if (totalBudget < 500) return "#81ecec"; // Pastel teal
     if (totalBudget < 1000) return "#ffeaa7"; // Pastel yellow
     return "#fab1a0"; // Pastel peach
   };
-
-  // console.log(totalBudget)
-
-  // const handleEnter =(e, categoryKey)=>{
-  //   if(e.key === 'Enter'){
-  //     handleSubmit(categoryKey);
-  //   }
-  // }
 
   const handleEdit = (categoryKey) => {
     console.log(categoryKey)

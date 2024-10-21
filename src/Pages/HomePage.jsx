@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // import Home from "../components/Home";
 import ExpenseList from "../components/Expense/ExpenseList";
 import AddExpenseModal from "../components/Expense/AddExpense";
-import Logout from "../components/Logout";
+import Logout from "../components/Logout/Logout";
 
 const HomePage = () => {
   const [date, setDate] = useState("");
@@ -13,7 +13,6 @@ const HomePage = () => {
   const [modeOfExpense, setModeOfExpense] = useState("");
   const [expenseToEdit, setExpenseToEdit] = useState(null); // For passing expense to modal
 
-  console.log(expenses, "exp");
   const handleAddExpenseClick = () => {
     setExpenseToEdit(null); // Reset for new entry
     setShowModal(true); // Open modal for adding a new expense
