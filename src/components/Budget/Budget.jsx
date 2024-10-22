@@ -120,6 +120,13 @@ const handleUpdateBudget = (categoryKey) => {
   }
 }
 
+
+// Get the label of the selected month
+const getMonthLabel = (monthValue) => {
+  const selectedMonth = months.find((m) => m.value === monthValue);
+  return selectedMonth ? selectedMonth.label : "";
+};
+
   return (
     <div className="budget-page">
       {/* <Sidebar/> */}
@@ -127,7 +134,7 @@ const handleUpdateBudget = (categoryKey) => {
 
       <header className="total-expense">
         <div className="total-expense-card">
-          <h2>Budget for {month} {year} </h2>
+          <h2>Budget for {getMonthLabel(month)} {year} </h2>
           <p className="total-amount" style={{ color: getTotalAmountColor() }}>
             {" "}
             ₹ {Number(totalBudget).toFixed(2)}

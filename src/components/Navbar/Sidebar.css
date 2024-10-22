@@ -1,0 +1,89 @@
+/* Sidebar Styles */
+.sidebar {
+  width: 60px;  /* Collapsed width */
+  height: 100vh;
+  background-color: #2c2f33;
+  color: #b0bec5;
+  transition: width 0.3s ease;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  /* This pushes the footer to the bottom */
+}
+
+.sidebar.expanded {
+  width: 200px;  /* Expanded width */
+  /* position: relative; */
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.logo-text {
+  font-size: 2rem;
+  color: white;
+}
+
+.menu-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  color: #b0bec5;
+  cursor: pointer;
+  width: auto;
+  transition: background-color 0.2s;
+  border-radius: 8px;
+}
+
+.menu-item:hover {
+  background-color: #4a4f56;
+}
+
+.menu-item svg {
+  font-size: 1.5rem;
+}
+
+.menu-item span {
+  margin-left: 20px;
+  font-size: 1.2rem;
+}
+
+.sidebar.expanded .menu-item {
+  justify-content: flex-start;
+}
+
+.sidebar.collapsed .menu-item {
+  justify-content: center;
+}
+
+.sidebar.collapsed .menu-item span {
+  display: none;
+}
+
+/* Footer Section */
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.sidebar-footer .menu-item {
+  width: 100%;
+  justify-content: center;
+}
+
+.sidebar.expanded .sidebar-footer .menu-item {
+  justify-content: flex-start;
+}
