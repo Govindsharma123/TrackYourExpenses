@@ -15,6 +15,7 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { toast } from "react-toastify";
+import { faListUl } from "@fortawesome/free-solid-svg-icons";
 
 
 export const getData = (path) => {
@@ -127,38 +128,38 @@ export const getImageStoragePath = () => {
 export const getCityImage = (value) => {
   https: return `https://firebasestorage.googleapis.com/v0/b/wevois-dev.appspot.com/o/VM%2Fwevoislabs%2FDefaultCityLogo%2F${value}?alt=media&token=bb50511c-9cab-4bb4-9690-ede56fc724df`;
 };
-// export const updateCounts = (path, increment) => {
-//   //This function will get and update the count(data) on the given path at the same time:
-//   /*Logic behind the scene:
-//     Here We will get path as a param from where we will fetch and update the data.
-//     We will use firebase runTransaction method here which manages the data in the database with faster speed then firebase set operation
-//   */
-//   return new Promise(async (resolve) => {
-//     const dbRef = ref(database, path);
-//     runTransaction(dbRef, (currentValue) => {
-//       // currentValue is the current value in the database
-//       let newValue = (Number(currentValue) || 0) + Number(increment);
-//       newValue = newValue > 0 ? newValue : 0; //If it's negative then make it zero
-//       return newValue; // The value to be written to the database
-//     })
-//       .then((result) => {
-//         // The transaction completed successfully
-//         resolve(
-//           common.setResponse(
-//             "success",
-//             "Count Updated Successfully.",
-//             result.snapshot.val()
-//           )
-//         );
-//       })
-//       .catch((error) => {
-//         // Handle errors during the transaction
-//         resolve(
-//           common.setResponse("fail", "Count Updated failed!", { error: error })
-//         );
-//       });
-//   });
-// };
+export const updateCounts = (path, increment) => {
+  //This function will get and update the count(data) on the given path at the same time:
+  /*Logic behind the scene:
+    Here We will get path as a param from where we will fetch and update the data.
+    We will use firebase runTransaction method here which manages the data in the database with faster speed then firebase set operation
+  */
+  return new Promise(async (resolve) => {
+    const dbRef = ref(database, path);
+    runTransaction(dbRef, (currentValue) => {
+      // currentValue is the current value in the database
+      let newValue = (Number(currentValue) || 0) + Number(increment);
+      newValue = newValue > 0 ? newValue : 0; //If it's negative then make it zero
+      return newValue; // The value to be written to the database
+    })
+      .then((result) => {
+        // The transaction completed successfully
+        resolve(
+          {
+            success : result.snapshot.val()
+          }
+        );
+      })
+      .catch((error) => {
+        // Handle errors during the transaction
+        resolve(
+          {
+            failure : error.message
+          }
+        );
+      });
+  });
+};
 export const fetchRealTimeData = (path, setState, userStatus) => {
   if (path) {
     const unsubscribe = onValue(

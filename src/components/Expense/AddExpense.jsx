@@ -133,13 +133,6 @@ const AddExpenseModal = (props) => {
       .catch(() => {
         toast.error("Error updating expense. Please try again later.");
       });
-        //   toast.success("Expense updated successfully");
-        //   clearForm();
-        //   props.setShowModal(false);
-        // })
-        // .catch(() => {
-        //   toast.error("Error updating expense. Please try again later.");
-        // });
     } else {
       // Otherwise, add a new expense
       saveExpense(expenseData)

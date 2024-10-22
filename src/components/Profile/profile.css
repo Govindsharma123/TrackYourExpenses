@@ -1,0 +1,107 @@
+.header{
+  width: 80%; /* Set a fixed width for the header */
+  max-width: 1200px; /* Optional: Limit the maximum width */
+  margin: 0 auto; /* Center the header horizontally */
+  padding: 10px 10px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  /* background-color: red; */
+  position: relative;
+  /* background: linear-gradient(135deg, #4169e1, #6a0dad); */
+}
+.profile-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  margin-top: 50px;
+}
+
+
+
+.profile-picture {
+  position: relative;
+  margin-right: 30px;
+   /* Make parent relative for positioning child */
+  display: flex; 
+}
+
+.profile-picture img {
+  border-radius: 5%;
+  border: 2px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.profile-details p {
+  font-size: 16px;
+  margin: 5px 0;
+  margin-left: 50px;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loader p {
+  font-size: 18px;
+  color: #555;
+}
+.upload-icon {
+  position: absolute; /* Position icon absolutely */
+  top: 5px; /* Adjust this value to position the icon */
+  right: 5px; /* Adjust this value to position the icon */
+  background: white; /* Background color for better visibility */
+  border-radius: 5%; /* Make it round */
+  padding: 1px; /* Add some padding around the icon */
+  cursor: pointer; /* Show pointer cursor */
+  /* transition: background 0.3s; Smooth transition */
+}
+
+.upload-icon:hover {
+  background: lightgray; /* Change background on hover */
+}
+
+.upload-icon svg {
+  color: #007BFF; /* Icon color */
+  font-size: 20px; /* Adjust icon size */
+}
+
+.card-container {
+  display: flex;
+  justify-content: center; /* Space out the cards evenly */
+  width: 100%; /* Full width */
+  max-width: 1200px; /* Optional: Limit the maximum width */
+  margin-top: 70px; /* Space above cards */
+  position: relative;
+  margin : 0 auto;
+  /* border : 1px solid black;
+  padding: 10px 10px ; */
+  
+}
+
+.card {
+  flex: 1; /* Each card takes equal space */
+  min-width: 200px;
+  margin: 0 10px; /* Space between cards */
+  padding: 20px;
+  border: 1px solid #ccc; /* Border for card */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for card */
+  text-align: center; /* Center text in cards */
+  background: linear-gradient(135deg, #4169e1, #6a0dad);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.card h3 {
+  margin-bottom: 10px; /* Space below the title */
+}
+
+.card p {
+  font-size: 24px; /* Adjust font size for summary */
+  font-weight: bold; /* Make the summary bold */
+}

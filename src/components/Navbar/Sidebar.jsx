@@ -31,13 +31,9 @@ const Sidebar = () => {
     setIsExpanded(!isExpanded);
   };
 
-  const budgethandle = () => {
-    navigate('/budget');
-  }
+  
 
-  const homehandle = () => {
-    navigate('/');
-  }
+  
 
   const confirmLogout = () => {
     setShowLogoutModal(true);
@@ -67,7 +63,7 @@ const Sidebar = () => {
           <img src={logo} alt="" style={{tabSize:'10px'}}/>
           
         </div> */}
-        <div className="menu-item" onClick={homehandle}>
+        <div className="menu-item" onClick={()=> navigate('/')}>
           <FaHome />
           {isExpanded && <span>Home</span>}
         </div>
@@ -79,14 +75,14 @@ const Sidebar = () => {
           <FaCalendarAlt />
           {isExpanded && <span>Calendar</span>}
         </div> */}
-        <div className="menu-item" onClick={budgethandle}>
+        <div className="menu-item" onClick={()=> navigate('/budget')}>
           <FaThLarge />
           {isExpanded && <span>Budget</span>}
         </div>
-        {/* <div className="menu-item">
+        <div className="menu-item" onClick={()=> navigate('/profile')}>
           <FaUser />
           {isExpanded && <span>Profile</span>}
-        </div> */}
+        </div>
       </div>
       {/* Footer Section */}
       <div className="sidebar-footer">

@@ -5,31 +5,33 @@ import "./Budget.css"; // Import CSS for styling
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 import Sidebar from "../Navbar/Sidebar";
+import dayjs from "dayjs";
 
 const Budget = () => {
   const currentDate = new Date();
   const [categories, setCategories] = useState([]);
   const [budgets, setBudgets] = useState({});
   const [savedBudgets, setSavedBudgets] = useState({}); // Track saved budgets
-  const [month, setMonth] = useState(String(currentDate.getMonth() + 1).padStart(2, "0"));
-  const [year, setYear] =  useState(String(currentDate.getFullYear()));
+  const [month, setMonth] = useState(dayjs().format('MMM'));
+  const [year, setYear] =  useState(dayjs().format('YYYY'));;
   const [editingCategory, setEditingCategory] = useState(null);
 
+  // console.log(year, month)
   const months = [
-    { value: "01", label: "January" },
-    { value: "02", label: "February" },
-    { value: "03", label: "March" },
-    { value: "04", label: "April" },
-    { value: "05", label: "May" },
-    { value: "06", label: "June" },
-    { value: "07", label: "July" },
-    { value: "08", label: "August" },
-    { value: "09", label: "September" },
-    { value: "10", label: "October" },
-    { value: "11", label: "November" },
-    { value: "12", label: "December" },
+    { value: "Jan", label: "January" },
+    { value: "Feb", label: "February" },
+    { value: "Mar", label: "March" },
+    { value: "Apr", label: "April" },
+    { value: "May", label: "May" },
+    { value: "Jun", label: "June" },
+    { value: "Jul", label: "July" },
+    { value: "Aug", label: "August" },
+    { value: "Sep", label: "September" },
+    { value: "Oct", label: "October" },
+    { value: "Nov", label: "November" },
+    { value: "Dec", label: "December" },
   ];
-
+  
   const currentYear = new Date().getFullYear();
   const yearRange = Array.from(new Array(10), (v, i) => currentYear - i);
 

@@ -1,10 +1,6 @@
 import dayjs from "dayjs";
-import { getData, getLastKey, RemoveData, saveData } from "../dbServices"
+import { fetchRealTimeData, getData, getLastKey, RemoveData, saveData, updateCounts } from "../dbServices"
 import { toast } from "react-toastify";
-
-
-
- 
 
 
 export const saveExpense = (newExpense) => {
@@ -23,11 +19,15 @@ export const saveExpense = (newExpense) => {
     }
     console.log(uid)
     // console.log('lastKey', lastKey);
+    console.log(newExpense)
     if (newExpense && uid != null){
       const path = `Data/${uid}/Expense/${year}/${month}/${date}/${lastKey}`;
       console.log('path', path)
       saveData(path,newExpense);
       saveData(`Data/${uid}/Expense/${year}/${month}/${date}`, {lastKey});
+
+      const path2 = `Data/${uid}/Summary/MonthlySummary/${year}/${month}/expense`
+      updateCounts(path2, newExpense.amount);
 
 
       console.log('data saved successfully')
@@ -226,3 +226,27 @@ export const deleteExpense = async(id, expense) => {
 })
 }
 
+
+export const getTotalExpense = (setState) => {
+    const year = dayjs().format('YYYY');
+    const month = dayjs().format('MMM');
+    const uid = localStorage.getItem('uid');
+    if(!uid){
+      toast.error('uid not found');
+      return;
+    }
+    // console.log('setState', setState);
+    const path = `Data/${uid}/Summary/MonthlySummary/${year}/${month}/expense`;
+
+    return fetchRealTimeData(path, (data) => {
+      // console.log(data)
+      if (data) {
+        // const expense = data || '0'; 
+        setState(data);
+      } else {
+        setState(0);
+        // toast.error('No expense data found');
+        // reject('No expense data found');
+      }
+    });
+};
