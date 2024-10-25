@@ -9,11 +9,13 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;  /* This pushes the footer to the bottom */
+
 }
 
 .sidebar.expanded {
   width: 200px;  /* Expanded width */
-  /* position: relative; */
+  position: relative;
+  /* z-index: 9; */
 }
 
 .logo {

@@ -3,10 +3,13 @@
   max-width: 1200px; /* Optional: Limit the maximum width */
   margin: 0 auto; /* Center the header horizontally */
   padding: 10px 10px;
+  
   text-align: center;
   display: flex;
   justify-content: center;
-  /* background-color: red; */
+  background: linear-gradient(135deg, #4169e1, #6a0dad);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  color: white;
   position: relative;
   /* background: linear-gradient(135deg, #4169e1, #6a0dad); */
 }
@@ -15,7 +18,7 @@
   margin: 0 auto;
   text-align: center;
   display: flex;
-  margin-top: 50px;
+  margin-top: 100px;
 }
 
 
@@ -25,6 +28,7 @@
   margin-right: 30px;
    /* Make parent relative for positioning child */
   display: flex; 
+  margin-bottom: 50px;
 }
 
 .profile-picture img {
@@ -75,7 +79,8 @@
   justify-content: center; /* Space out the cards evenly */
   width: 100%; /* Full width */
   max-width: 1200px; /* Optional: Limit the maximum width */
-  margin-top: 70px; /* Space above cards */
+  /* margin-top: 100px; */
+   /* Space above cards */
   position: relative;
   margin : 0 auto;
   /* border : 1px solid black;

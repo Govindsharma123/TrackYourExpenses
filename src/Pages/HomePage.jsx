@@ -21,7 +21,7 @@ const HomePage = () => {
 
   return (
     <>
-    <Sidebar/>
+   
       
       {showModal && (
         <AddExpenseModal

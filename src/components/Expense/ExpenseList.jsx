@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./expenseList.css";
 import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,10 +24,11 @@ import { MdDelete } from "react-icons/md";
 import { toast } from "react-toastify";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useNavigate } from "react-router";
+import { DateContext } from "../../Context/DateContext";
 
 const ExpenseList = (props) => {
   const [loading, setLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const {selectedDate} = useContext(DateContext);
   const [selectedExpense, setSelectedExpense] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -40,7 +41,7 @@ const ExpenseList = (props) => {
       setLoading(true);
 
       try {
-        const expenseList = await getExpenseList(uid);
+        const expenseList = await getExpenseList(uid, selectedDate.year , selectedDate.month);
         props.setExpenses(expenseList);
       } catch (error) {
         console.log("error in fetching expense list", error);
@@ -49,7 +50,7 @@ const ExpenseList = (props) => {
       setLoading(false);
     };
     fetchExpenses();
-  }, []);
+  }, [selectedDate]);
 
   // Function to assign icons based on expense type
   const getIconForType = (category) => {
@@ -124,8 +125,7 @@ const ExpenseList = (props) => {
         props.setExpenses((prevExpenses) => {
           return prevExpenses.filter(
             (expense) =>
-              expense.date !== selectedExpense.date &&
-              expense.id !== selectedExpense.id
+              !( expense.id === selectedExpense.id)
           );
         });
       } catch (error) {

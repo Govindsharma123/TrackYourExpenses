@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from 'react';
-
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import React, { useState, useEffect, useContext } from 'react';
 import { auth, storage } from '../../Firebase'; // Make sure you've initialized Firebase storage
 import './profile.css'
 import { onAuthStateChanged } from 'firebase/auth';
 import { FaPlus } from 'react-icons/fa';
 import { getTotalExpense } from '../../services/HomeServices/HomeServices';
 import { getTotalBudget } from '../../services/HomeServices/BudgetServices';
+import { getTotalIncome } from '../../services/IncomeServices/IncomeServices';
+import { DateContext } from '../../Context/DateContext';
 
 const Profile = () => {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [totalExpense, setTotalExpense] = useState(0);
   const [totalBudget, setTotalBudget] = useState(0);
-  
+  const [totalIncome, setTotalIncome] = useState(0);
+  const {selectedDate} = useContext(DateContext);
 
   // console.log('auth', auth)
 
+  //gmail se maal uthaya
   useEffect(()=> {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if(user) {
@@ -37,16 +39,25 @@ const Profile = () => {
       
   },[])
 
+  //total expense 
   useEffect(()=> {
-    const unsubscribe = getTotalExpense(setTotalExpense);
+    const unsubscribe = getTotalExpense(setTotalExpense, selectedDate.year, selectedDate.month);
     return () => unsubscribe();
-  },[])
+  },[selectedDate])
 
+  //total budget
   useEffect(()=> {
-    const unsubscribe = getTotalBudget(setTotalBudget);
+    const unsubscribe = getTotalBudget(setTotalBudget, selectedDate.year, selectedDate.month);
     return () => unsubscribe();
-  },[]);
+  },[selectedDate]);
 
+  //total income
+  useEffect(()=>{
+    const unsubscribe = getTotalIncome(setTotalIncome, selectedDate.year, selectedDate.month);
+    return () => unsubscribe();
+  },[selectedDate]);
+
+  //loader
   if(loading){
     return(
       <div className='loader'>
@@ -69,12 +80,12 @@ const Profile = () => {
     return (
       <>
       <h2 className='header'>User Profile</h2>
-      <p style={{display:'flex', justifyContent:'center'}}>page under progress</p>
       <div style={{display:'flex', flexDirection:'column'}}>
         
 
         <div className='profile-page'>
         <div className='profile-picture'>
+          {/* {console.log(user.photoURL)} */}
           <img 
             src={user.photoURL}
             alt='profile' 
@@ -92,7 +103,7 @@ const Profile = () => {
           <p><strong>Email:</strong> {user.email}</p>
         </div>
         </div>
-      {/* {console.log('hlo', getTotalExpense())} */}
+        
         {/*cards section */}
         <div className='card-container'>
           <div className='card '>
@@ -105,7 +116,7 @@ const Profile = () => {
           </div>
           <div className='card '>
             <h3>Total Income</h3>
-            <p>₹ </p>
+            <p>₹ {totalIncome}</p>
           </div>
           <div className='card '>
             <h3>Total Savings</h3>

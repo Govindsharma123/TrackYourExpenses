@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaHome, FaTachometerAlt, FaCalendarAlt, FaThLarge, FaUser } from 'react-icons/fa';
+import { FaHome, FaTachometerAlt, FaCalendarAlt, FaThLarge, FaUser, FaRupeeSign } from 'react-icons/fa';
 import { TbBrandWindows } from "react-icons/tb";
 import './Sidebar.css';  // Import the CSS file
 import './logout.css'
@@ -67,14 +67,11 @@ const Sidebar = () => {
           <FaHome />
           {isExpanded && <span>Home</span>}
         </div>
-        {/* <div className="menu-item">
-          <FaTachometerAlt />
-          {isExpanded && <span>Dashboard</span>}
-        </div> */}
-        {/* <div className="menu-item">
-          <FaCalendarAlt />
-          {isExpanded && <span>Calendar</span>}
-        </div> */}
+        <div className="menu-item" onClick={()=> navigate('/income')}>
+        <FaRupeeSign />
+          {isExpanded && <span>Income</span>}
+        </div>
+       
         <div className="menu-item" onClick={()=> navigate('/budget')}>
           <FaThLarge />
           {isExpanded && <span>Budget</span>}
@@ -98,8 +95,8 @@ const Sidebar = () => {
 
       {/* Confirmation Modal */}
       {showLogoutModal && (
-          <div className="delete-modal">
-            <div className="delete-modal-content">
+          <div className="logOut-modal">
+            <div className="logOut-modal-content">
               <h3>Confirm Logout</h3>
               <p>Are you sure you want to log out?</p>
               <div className="modal-actions">

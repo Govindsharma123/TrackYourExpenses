@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { getAllCategories } from "../../services/HomeServices/HomeServices"; // Example service functions
 import { fetchBudget, getBudget, saveBudget, updateBudget } from "../../services/HomeServices/BudgetServices";
 import "./Budget.css"; // Import CSS for styling
@@ -6,39 +6,26 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 import Sidebar from "../Navbar/Sidebar";
 import dayjs from "dayjs";
+import { DateContext } from "../../Context/DateContext";
 
 const Budget = () => {
   const currentDate = new Date();
   const [categories, setCategories] = useState([]);
   const [budgets, setBudgets] = useState({});
   const [savedBudgets, setSavedBudgets] = useState({}); // Track saved budgets
-  const [month, setMonth] = useState(dayjs().format('MMM'));
-  const [year, setYear] =  useState(dayjs().format('YYYY'));;
+  // const [month, setMonth] = useState(localStorage.getItem('selectedMonth'));
+  // const [year, setYear] =  useState(localStorage.getItem('selectedYear'));;
   const [editingCategory, setEditingCategory] = useState(null);
-
+  const {selectedDate} = useContext(DateContext);
   // console.log(year, month)
-  const months = [
-    { value: "Jan", label: "January" },
-    { value: "Feb", label: "February" },
-    { value: "Mar", label: "March" },
-    { value: "Apr", label: "April" },
-    { value: "May", label: "May" },
-    { value: "Jun", label: "June" },
-    { value: "Jul", label: "July" },
-    { value: "Aug", label: "August" },
-    { value: "Sep", label: "September" },
-    { value: "Oct", label: "October" },
-    { value: "Nov", label: "November" },
-    { value: "Dec", label: "December" },
-  ];
+
   
-  const currentYear = new Date().getFullYear();
-  const yearRange = Array.from(new Array(10), (v, i) => currentYear - i);
+   
 
   useEffect(() => {
     getAllCategories().then((categories) => setCategories(categories));
-    fetchBudget(year,month);
-  },[year, month])
+    fetchBudget(selectedDate.year, selectedDate.month);
+  },[selectedDate])
 
   const fetchBudget = (selectedYear, selectedMonth) => {
     getBudget(selectedYear, selectedMonth)
@@ -66,7 +53,7 @@ const Budget = () => {
    
       const budgetAmount = budgets[categoryKey];
       if (budgetAmount > 0) {
-        saveBudget(year, month,  categoryKey, budgetAmount)
+        saveBudget(selectedDate.year, selectedDate.month,  categoryKey, budgetAmount)
           .then(() => {
             console.log(`Budget for category ${categoryKey} saved`);
             setSavedBudgets((prev) => ({
@@ -104,7 +91,7 @@ const handleUpdateBudget = (categoryKey) => {
   const budgetAmount = budgets[categoryKey];
 
   if(budgetAmount > 0){
-    updateBudget(year, month, categoryKey, budgetAmount)
+    updateBudget(selectedDate.year, selectedDate.month, categoryKey, budgetAmount)
      .then(() => {
        console.log(`Budget for category ${categoryKey} updated`);
        setSavedBudgets((prev) => ({
@@ -125,8 +112,8 @@ const handleUpdateBudget = (categoryKey) => {
 
 // Get the label of the selected month
 const getMonthLabel = (monthValue) => {
-  const selectedMonth = months.find((m) => m.value === monthValue);
-  return selectedMonth ? selectedMonth.label : "";
+  const selectedMonth = selectedDate.month
+  return selectedMonth ? selectedDate.month : "";
 };
 
   return (
@@ -136,7 +123,7 @@ const getMonthLabel = (monthValue) => {
 
       <header className="total-expense">
         <div className="total-expense-card">
-          <h2>Budget for {getMonthLabel(month)} {year} </h2>
+          <h2>Budget for {getMonthLabel(selectedDate.month)} {selectedDate.year} </h2>
           <p className="total-amount" style={{ color: getTotalAmountColor() }}>
             {" "}
             ₹ {Number(totalBudget).toFixed(2)}
@@ -144,36 +131,7 @@ const getMonthLabel = (monthValue) => {
         </div>
       </header>
 
-      {/* Month and Year Dropdowns */}
-      <div className="budget-date">
-        <label htmlFor="month">Month:</label>
-        <select
-          id="month"
-          value={month}
-          onChange={(e) => setMonth(e.target.value)}
-          className="input-date"
-        >
-          {months.map((m) => (
-            <option key={m.value} value={m.value}>
-              {m.label}
-            </option>
-          ))}
-        </select>
-
-        <label htmlFor="year">Year:</label>
-        <select
-          id="year"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-          className="input-date"
-        >
-          {yearRange.map((yr) => (
-            <option key={yr} value={yr}>
-              {yr}
-            </option>
-          ))}
-        </select>
-      </div>
+      
 
       {/* Cards for each category */}
       <form className="budget-form" >

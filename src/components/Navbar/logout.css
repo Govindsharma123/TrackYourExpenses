@@ -1,21 +1,24 @@
-.delete-modal {
-  position: fixed;
+.logOut-modal {
+  position: fixed; /* Fix the modal to the viewport */
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  width: 100vw; /* Full width of the viewport */
+  height: 100vh; /* Full height of the viewport */
+  background: rgba(0, 0, 0, 0.5); /* Transparent black background */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 9999; /* High z-index to appear on top of other elements */
+  /* opacity: 0; */
 }
 
-.delete-modal-content {
+.logOut-modal-content {
   background: white;
   padding: 20px;
   border-radius: 10px;
   text-align: center;
+  color: black;
+  
 }
 
 .modal-actions {

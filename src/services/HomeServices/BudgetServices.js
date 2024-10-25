@@ -20,7 +20,7 @@ export const saveBudget = (year, month, categoryKey ,budgetAmount) => {
     const budget = {
       budget : budgetAmount
     }
-    console.log('budget', budget)
+    // console.log('budget', budget)
 
     if(categoryKey && budget){
       const path = `Data/${uid}/Budget/${year}/${month}/${categoryKey}`
@@ -53,7 +53,7 @@ export const getBudget = (year, month) => {
     const budgetArray = [];
 
     if(snapshot){
-      console.log('snapshot', snapshot)
+      // console.log('snapshot', snapshot)
       Object.keys(snapshot).forEach((budgetKey) => {
         budgetArray.push({
           id : budgetKey,
@@ -81,12 +81,27 @@ export const updateBudget = (year, month, categoryKey, budgetAmount )=> {
       }
 
       const path = `Data/${uid}/Budget/${year}/${month}/${categoryKey}`
+      const prevSnapShot = await getData(path);
+
+      if (!prevSnapShot) {
+        toast.error('Expense not found');
+        reject('Expense not found');
+        return;
+      }
+
+      const prevAmount = prevSnapShot.budget || 0;
+
+      // Subtract the previous amount from the total
+      const summaryPath = `Data/${uid}/Summary/MonthlySummary/${year}/${month}/budget`;
+      await updateCounts(summaryPath, -prevAmount); // Subtract previous amount
 
       const snapshot = {
         budget : budgetAmount
       }
 
       saveData(path, snapshot);
+
+      updateCounts(summaryPath, snapshot.budget)
 
       toast.success('Budget updated successfully');
 
@@ -100,9 +115,9 @@ export const updateBudget = (year, month, categoryKey, budgetAmount )=> {
   })
 }
 
-export const getTotalBudget = (setState) => {
-  const year = dayjs().format('YYYY');
-  const month = dayjs().format('MMM');
+export const getTotalBudget = (setState, year, month) => {
+  // const year = localStorage.getItem('selectedYear');
+  // const month = localStorage.getItem('selectedMonth');
   const uid = localStorage.getItem('uid');
   if(!uid){
     toast.error('uid not found');

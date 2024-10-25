@@ -5,7 +5,7 @@ import Sidebar from '../components/Navbar/Sidebar'
 const BudgetPage = () => {
   return (
     <div>
-      <Sidebar/>
+      {/* <Sidebar/> */}
       <Budget/>
     </div>
   )

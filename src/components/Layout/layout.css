@@ -1,0 +1,31 @@
+/* layout.css */
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Sidebar styling to ensure it occupies its space */
+.sidebar {
+  width: 70px; /* Set the sidebar width */
+  
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+/* Main content area */
+.main-content {
+  margin: 0 auto; /* Give space for the sidebar */
+  padding: 20px;
+  width: calc(100% - 250px); /* Adjust width considering sidebar */
+}
+
+/* Buttons styling for top-right positioning */
+.buttons-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000; /* Ensure the buttons are above other content */
+}

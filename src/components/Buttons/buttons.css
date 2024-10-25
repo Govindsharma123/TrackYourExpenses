@@ -1,0 +1,106 @@
+/* Calendar icon */
+.calendar-icon {
+  display: inline-flex;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  /* transition: background-color 0.3s; */
+}
+
+.calendar-icon:hover {
+  background-color: #0056b3;
+}
+
+/* Modal styling */
+.calendar-modal {
+  position: fixed;
+  top: 10%;
+  right: 10%;
+  background-color: white;
+  border-radius: 8px;
+  width: 300px;
+  padding: 20px;
+  z-index: 1000;
+}
+
+/* Modal header */
+.modal-header {
+  display: flex;
+  justify-content: flex-end;
+  position: relative
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+.close-btn:hover {
+  color: #999;
+}
+
+/* Year navigation */
+.year-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.year-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s;
+}
+
+.year-btn:hover {
+  background-color: #0056b3;
+}
+
+.selected-year {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Month grid */
+.months-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.month-btn {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.month-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.month-btn.selected {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+/* Modal overlay */
+.calendar-modal::before {
+  content: "";
+  position: fixed;
+}

@@ -10,22 +10,21 @@ export const saveExpense = (newExpense) => {
     const date = dayjs(newExpense.date).format('YYYY-MM-DD');
     
     const uid = localStorage.getItem('uid');
-    const lastKey = await getLastKey(`Data/${uid}/Expense/${year}/${month}/${date}/lastKey`, "");
+    const lastKey = await getLastKey(`Data/${uid}/Expense/lastKey`, "");
 
     if(!uid){
       toast.error('Please login to save expenses');
       resolve(console.log('error in saving expense'));
       return;
     }
-    console.log(uid)
-    // console.log('lastKey', lastKey);
-    console.log(newExpense)
+   
     if (newExpense && uid != null){
       const path = `Data/${uid}/Expense/${year}/${month}/${date}/${lastKey}`;
       console.log('path', path)
       saveData(path,newExpense);
-      saveData(`Data/${uid}/Expense/${year}/${month}/${date}`, {lastKey});
+      saveData(`Data/${uid}/Expense`, {lastKey});
 
+      //TOTAL EXPENSe badha diya from amount which is saved
       const path2 = `Data/${uid}/Summary/MonthlySummary/${year}/${month}/expense`
       updateCounts(path2, newExpense.amount);
 
@@ -41,11 +40,11 @@ export const saveExpense = (newExpense) => {
   }
 )}
 
-export const getExpenseList = async(uid) => {
+export const getExpenseList = async(uid, year, month) => {
  
   return new Promise(async(resolve, reject) => {
-    const year = dayjs().format('YYYY');
-    const month = dayjs().format('MMM');
+    // const year = localStorage.getItem('selectedYear')
+    // const month = localStorage.getItem('selectedMonth')
     // const date = dayjs().format('YYYY-MM-DD');
     try{
       const path = `Data/${uid}/Expense/${year}/${month}`;
@@ -54,9 +53,8 @@ export const getExpenseList = async(uid) => {
       const expenseArray = [];
 
       if(snapshot){
-        
+        console.log(snapshot)
         Object.keys(snapshot).forEach((dateKey) => {
-          if(dateKey !== 'lastKey'){
             Object.keys(snapshot[dateKey]).forEach((expenseKey) => {
               // console.log(expenseKey)
               if (expenseKey !== 'lastKey') {
@@ -67,7 +65,7 @@ export const getExpenseList = async(uid) => {
               }
             });
           }
-        });
+        );
       // console.log('hlo')
         resolve(expenseArray);
       }
@@ -157,9 +155,10 @@ export const saveNewCategory = (newCategory) => {
 )}
 
 export const updateExpense = ( id, expense)=> {
-  // console.log(expense);
+  console.log(expense);
   return new Promise(async(resolve, reject) => {
     try{
+      //new dates in case of date is updated
       const year = dayjs(expense.date).format('YYYY');
       const month = dayjs(expense.date).format('MMM');
       const date = dayjs(expense.date).format('YYYY-MM-DD');
@@ -170,9 +169,34 @@ export const updateExpense = ( id, expense)=> {
         return;
       }
 
-     
+      const prevExpensePath = `Data/${uid}/Expense/${year}/${month}/${date}/${id}`;
+      console.log('prevExpensePath', prevExpensePath);
+      const prevExpenseSnapshot = await getData(prevExpensePath);
 
-      const path = `Data/${uid}/Expense/${year}/${month}/${date}/${id}`
+      if (!prevExpenseSnapshot) {
+        toast.error('Expense not found1');
+        reject('Expense not found');
+        return;
+      }
+
+      const prevAmount = prevExpenseSnapshot.amount || 0;
+      const prevYear = dayjs(prevExpenseSnapshot.date).format('YYYY');
+      const prevMonth = dayjs(prevExpenseSnapshot.date).format('MMM');
+
+      // Subtract the previous amount from the old month's total
+      const prevSummaryPath = `Data/${uid}/Summary/MonthlySummary/${prevYear}/${prevMonth}/expense`;
+      await updateCounts(prevSummaryPath, -prevAmount); // Subtract previous amount
+
+      // Remove the previous expense if the date has changed
+      if (prevExpenseSnapshot.date !== expense.date) {
+        await RemoveData(prevExpensePath); // Remove the expense from the previous date
+      }
+
+      
+
+      const updatedExpensePath = `Data/${uid}/Expense/${year}/${month}/${date}/${id}`;
+
+
       // console.log(path)
       const snapshot = {
         category: expense.category,
@@ -184,9 +208,14 @@ export const updateExpense = ( id, expense)=> {
 
       console.log('snapshot', snapshot)
 
-      await saveData(path, snapshot);
+      await saveData(updatedExpensePath, snapshot);
+
+      // Add the new amount to the new month's total
+      const newSummaryPath = `Data/${uid}/Summary/MonthlySummary/${year}/${month}/expense`;
+      await updateCounts(newSummaryPath, snapshot.amount); // Add the updated amount
+
       // toast.success('expense updated successfully')
-      resolve(expense);
+      resolve(snapshot);
     }
     catch(error){
       console.error('Error in updating expense:', error);
@@ -213,6 +242,12 @@ export const deleteExpense = async(id, expense) => {
     const path = `Data/${uid}/Expense/${year}/${month}/${date}/${id}`;
 
     try {
+
+      // Subtract the expense amount before deleting
+      const summaryPath = `Data/${uid}/Summary/MonthlySummary/${year}/${month}/expense`;
+      await updateCounts(summaryPath, -expense.amount); // Subtract amount from total
+      
+      // Delete the expense from the database
       const result = await RemoveData(path); // Using the RemoveData service
       console.log('Expense deleted successfully:', result);
       resolve(result);
@@ -227,9 +262,9 @@ export const deleteExpense = async(id, expense) => {
 }
 
 
-export const getTotalExpense = (setState) => {
-    const year = dayjs().format('YYYY');
-    const month = dayjs().format('MMM');
+export const getTotalExpense = (setState, year, month) => {
+    // const year = localStorage.getItem('selectedYear');
+    // const month = localStorage.getItem('selectedMonth');
     const uid = localStorage.getItem('uid');
     if(!uid){
       toast.error('uid not found');
@@ -239,7 +274,7 @@ export const getTotalExpense = (setState) => {
     const path = `Data/${uid}/Summary/MonthlySummary/${year}/${month}/expense`;
 
     return fetchRealTimeData(path, (data) => {
-      // console.log(data)
+      console.log(data)
       if (data) {
         // const expense = data || '0'; 
         setState(data);
