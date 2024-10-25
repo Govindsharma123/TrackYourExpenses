@@ -54,7 +54,7 @@ const Income = () => {
     };
 
     if (newIncome) {
-      saveIncome(newIncome)
+      saveIncome(newIncome, selectedDate.year, selectedDate.month)
         .then(() => {
           setIncomeSources((prev) => [...prev, newIncome]);
           toast.success("New income added successfully");

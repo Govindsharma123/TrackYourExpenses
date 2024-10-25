@@ -4,6 +4,7 @@ import ExpenseList from "../components/Expense/ExpenseList";
 import AddExpenseModal from "../components/Expense/AddExpense";
 // import Logout from "../components/Logout/Logout";
 import Sidebar from "../components/Navbar/Sidebar";
+import dayjs from "dayjs";
 
 const HomePage = () => {
   const [date, setDate] = useState("");
@@ -16,13 +17,12 @@ const HomePage = () => {
 
   const handleAddExpenseClick = () => {
     setExpenseToEdit(null); // Reset for new entry
+    setDate(dayjs().format("DD/MM/YYYY"))
     setShowModal(true); // Open modal for adding a new expense
   };
 
   return (
     <>
-   
-      
       {showModal && (
         <AddExpenseModal
           date={date}
@@ -42,6 +42,8 @@ const HomePage = () => {
           // addExpense={handleAddExpense}
         />
       )}
+      {console.log(date)}
+      {console.log(dayjs().format('DD/MM/YYYY'))}
 
       <ExpenseList
         expenses={expenses}

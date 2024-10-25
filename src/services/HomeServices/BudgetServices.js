@@ -6,8 +6,7 @@ import dayjs from "dayjs";
 
 export const saveBudget = (year, month, categoryKey ,budgetAmount) => {
   return new Promise(async(resolve) => {
-    const year = dayjs().format('YYYY');
-    const month = dayjs().format('MMM');
+   
     console.log(year, month , 'service')
     const uid = localStorage.getItem('uid');
 

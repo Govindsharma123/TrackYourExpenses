@@ -28,7 +28,7 @@ import { DateContext } from "../../Context/DateContext";
 
 const ExpenseList = (props) => {
   const [loading, setLoading] = useState(true);
-  const {selectedDate} = useContext(DateContext);
+  const { selectedDate } = useContext(DateContext);
   const [selectedExpense, setSelectedExpense] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -41,7 +41,11 @@ const ExpenseList = (props) => {
       setLoading(true);
 
       try {
-        const expenseList = await getExpenseList(uid, selectedDate.year , selectedDate.month);
+        const expenseList = await getExpenseList(
+          uid,
+          selectedDate.year,
+          selectedDate.month
+        );
         props.setExpenses(expenseList);
       } catch (error) {
         console.log("error in fetching expense list", error);
@@ -100,11 +104,6 @@ const ExpenseList = (props) => {
       ? totalExpenses
       : parseFloat(totalExpenses) || 0;
 
-  const getTotalAmountColor = () => {
-    if (totalExpenses < 500) return "#81ecec"; // Pastel teal
-    if (totalExpenses < 1000) return "#ffeaa7"; // Pastel yellow
-    return "#fab1a0"; // Pastel peach
-  };
 
   // Handle edit
   const handleEdit = (expense) => {
@@ -124,8 +123,7 @@ const ExpenseList = (props) => {
         // Remove deleted expense from the list
         props.setExpenses((prevExpenses) => {
           return prevExpenses.filter(
-            (expense) =>
-              !( expense.id === selectedExpense.id)
+            (expense) => !(expense.id === selectedExpense.id)
           );
         });
       } catch (error) {

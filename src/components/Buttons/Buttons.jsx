@@ -52,7 +52,7 @@ const Buttons = () => {
   return (
     <div>
       {/* Display currently selected date */}
-      <div>{/* <h3>{selectedDate.month} {selectedDate.year}</h3> */}</div>
+      <div><h3>{selectedDate.month} {selectedDate.year}</h3></div>
 
       <div className="calendar-icon" onClick={opencalender}>
         <FaCalendarAlt />

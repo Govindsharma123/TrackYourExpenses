@@ -11,6 +11,7 @@ export const saveExpense = (newExpense) => {
     
     const uid = localStorage.getItem('uid');
     const lastKey = await getLastKey(`Data/${uid}/Expense/lastKey`, "");
+    console.log(lastKey)
 
     if(!uid){
       toast.error('Please login to save expenses');
@@ -53,7 +54,7 @@ export const getExpenseList = async(uid, year, month) => {
       const expenseArray = [];
 
       if(snapshot){
-        console.log(snapshot)
+        // console.log(snapshot)
         Object.keys(snapshot).forEach((dateKey) => {
             Object.keys(snapshot[dateKey]).forEach((expenseKey) => {
               // console.log(expenseKey)

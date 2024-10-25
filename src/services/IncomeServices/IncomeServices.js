@@ -2,10 +2,9 @@ import dayjs from "dayjs"
 import { fetchRealTimeData, getData, getLastKey, saveData, updateCounts } from "../dbServices"
 import { toast } from "react-toastify"
 
-export const saveIncome = (newIncome) => {
+export const saveIncome = (newIncome, year, month) => {
   return new Promise(async(resolve) => { 
-    const year = dayjs().format('YYYY')
-  const month = dayjs().format('MMM')
+  
   const uid = localStorage.getItem('uid')
 
     if(!uid){

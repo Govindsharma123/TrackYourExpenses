@@ -15,6 +15,12 @@ const AddExpenseModal = (props) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isCategoryValid, setIsCategoryValid] = useState(false); // <-- New state to track button disable
 
+  // useEffect(()=>{
+  //   if (props.showModal && !props.expenseToEdit) {
+  //     const today = dayjs().format("YYYY-MM-DD"); // Ensure date format matches input type="date"
+  //     props.setDate(today);
+  //   }
+  // }, [props.showModal, props.expenseToEdit]);
  
   useEffect(() => {
     const fetchCategories = async () => {
@@ -31,6 +37,8 @@ const AddExpenseModal = (props) => {
 
     if (props.showModal) fetchCategories();
   }, [props.showModal]);
+
+
 
   useEffect(() => {
     if (props.expenseToEdit && props.showModal && !loadingCategories) {
@@ -52,10 +60,7 @@ const AddExpenseModal = (props) => {
     }
   }, [props.expenseToEdit, loadingCategories]);
 
-  useEffect(()=>{
-    const today = dayjs().format("DD-MM-YYYY");
-    props.setDate(today);
-  },[props.showModal]);
+
 
   
 

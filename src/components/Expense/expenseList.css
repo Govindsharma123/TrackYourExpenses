@@ -11,11 +11,11 @@
 /* Total Expense Section */
 .total-expense {
   margin-bottom: 20px;
-  display: flex;
+  display: in;
   justify-content: center;
-  position: relative;
-  top: 10px;
-  z-index: 100; /* High z-index but lower than logout modal */
+  /* position: relative; */
+  /* top: 10px;
+  z-index: 2;  */
 }
 
 .total-expense-card {
@@ -27,7 +27,7 @@
   text-align: center;
   width: 100%;
   max-width: 400px;
-  position: relative;
+  /* position: relative; */
   z-index: 1; /* Stays above most content, but below the logout modal */
   overflow: hidden;
   animation: fadeIn 0.5s ease-in-out;
@@ -120,8 +120,8 @@
 /* Expense List Section */
 .expense-list {
   margin-top: 40px;
-  /* position: relative;
-  z-index: -1; */
+  /* position: relative;*/
+  z-index: 2;
 }
 
 .expense-list h3 {
@@ -242,7 +242,7 @@
   max-width: 500px;
   width: 90%;
   box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.1);
-  animation: slideIn 0.3s ease forwards;
+  /* animation: slideIn 0.3s ease forwards; */
 }
 
 @keyframes slideIn {
@@ -364,9 +364,9 @@
 }
 .expense-card {
   /* Existing styles */
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.5s forwards;
+  /* opacity: 0;
+  transform: translateY(20px); */
+  /* animation: fadeInUp 0.5s forwards; */
 }
 
 @keyframes fadeInUp {
@@ -411,23 +411,38 @@
 
 .delete-modal {
   position: fixed;
-  /* top: 0;
+  top: 0;
   left: 0;
-  right: 0;
-  bottom: 0; */
-  position: relative;
-  margin: 0 auto;
-  /* background: rgba(0, 0, 0, 0.5); */
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 9999; /* Make sure it’s on top */
+  backdrop-filter: blur(5px); /* Blurring effect */
 }
 
 .delete-modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.2);
+  /* animation: slideIn 0.3s ease forwards; */
+}
+
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .modal-actions {
